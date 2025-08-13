@@ -7,12 +7,13 @@ int CALLBACK WinMain(
 	int       nCmdShow)
 {
 	Window wnd(800, 300, "Donkey Fart Box");
+	Window wnd2(200, 650, "Donkey Fart Box2");
 
 	// message pump
 	MSG msg;
 	BOOL gResult;
 
-	while (gResult = GetMessage(&msg, nullptr, 0, 0) > 0)
+	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
@@ -22,6 +23,8 @@ int CALLBACK WinMain(
 	{
 		return -1;
 	}
-
-	return msg.wParam;
+	else
+	{
+		return (int)msg.wParam;
+	}
 }

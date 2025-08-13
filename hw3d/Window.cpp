@@ -21,7 +21,7 @@ Window::WindowClass::WindowClass() noexcept
 	// register window class
 	wc.cbSize = sizeof(wc);
 	wc.style = CS_OWNDC;
-	wc.lpfnWndProc = HandelMsgSetup;
+	wc.lpfnWndProc = HandleMsg;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = GetInstance();
@@ -50,7 +50,7 @@ Window::Window(int width, int height, const char* name) noexcept
 	wr.bottom = height + wr.top;
 	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 	// Create window & get hWnd
-	HWND hWnd = CreateWindowExA(
+	hWnd = CreateWindowExA(
 		0, WindowClass::GetName(), name,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
@@ -65,7 +65,7 @@ Window::~Window()
 	DestroyWindow(hWnd);
 }
 
-LRESULT Window::HandelMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
+LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
 	if (msg == WM_NCCREATE) 
 	{
@@ -79,7 +79,7 @@ LRESULT Window::HandelMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
 
 		// 将窗口过程设置为常规处理函数
-		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(Window::HandleMsgThunk));
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&Window::HandleMsgThunk));
 
 		// 转发消息到Window对象的处理函数
 		return pWnd->HandleMsg(hWnd, msg, wParam, lParam);
