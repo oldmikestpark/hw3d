@@ -1,0 +1,111 @@
+#include "Window.h"
+
+Window::WindowClass Window::WindowClass::wndClass;
+
+const char* Window::WindowClass::GetName() noexcept
+{
+    return wndClassName;
+}
+
+HINSTANCE Window::WindowClass::GetInstance() noexcept
+{
+    return wndClass.hInst;
+}
+
+Window::WindowClass::WindowClass() noexcept
+    :
+    hInst(GetModuleHandle(nullptr))
+{
+	WNDCLASSEX wc{ 0 };
+
+	// register window class
+	wc.cbSize = sizeof(wc);
+	wc.style = CS_OWNDC;
+	wc.lpfnWndProc = HandelMsgSetup;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = GetInstance();
+	wc.hIcon = nullptr;
+	wc.hCursor = nullptr;
+	wc.hbrBackground = nullptr;
+	wc.lpszMenuName = nullptr;
+	wc.lpszClassName = GetName();
+	wc.hIconSm = nullptr;
+	RegisterClassEx(&wc);
+}
+
+Window::WindowClass::~WindowClass()
+{
+	UnregisterClass(wndClassName, GetInstance());
+}
+
+// Window stuff
+Window::Window(int width, int height, const char* name) noexcept
+{
+	// Caculate window size based on desired client region size
+	RECT wr;
+	wr.left = 100;
+	wr.right = width + wr.left;
+	wr.top = 100;
+	wr.bottom = height + wr.top;
+	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	// Create window & get hWnd
+	HWND hWnd = CreateWindowExA(
+		0, WindowClass::GetName(), name,
+		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
+		nullptr, nullptr, WindowClass::GetInstance(), this
+	);
+	// Show window
+	ShowWindow(hWnd, SW_SHOWDEFAULT);
+}
+
+Window::~Window()
+{
+	DestroyWindow(hWnd);
+}
+
+LRESULT Window::HandelMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
+{
+	if (msg == WM_NCCREATE) 
+	{
+		// 从创建参数中提取CREATESTRUCT结构
+		const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lParam);
+
+		// 获取创建窗口时传递的Window对象指针
+		Window* const pWnd = static_cast<Window*>(pCreate->lpCreateParams);
+
+		// 将Window指针存储在窗口的USERDATA中
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
+
+		// 将窗口过程设置为常规处理函数
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(Window::HandleMsgThunk));
+
+		// 转发消息到Window对象的处理函数
+		return pWnd->HandleMsg(hWnd, msg, wParam, lParam);
+	}
+
+	// 处理WM_NCCREATE之前的消息
+	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+LRESULT CALLBACK Window::HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
+{
+	// 从窗口USERDATA中获取Window对象指针
+	Window* const pWnd = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+
+	// 转发消息到Window对象的处理函数
+	return pWnd->HandleMsg(hWnd, msg, wParam, lParam);
+}
+
+LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
+{
+	switch (msg) 
+	{
+	case WM_CLOSE:
+		PostQuitMessage(0);
+		return 0;
+	}
+	return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+
