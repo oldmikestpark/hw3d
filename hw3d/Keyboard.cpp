@@ -100,9 +100,9 @@ void Keyboard::ClearState() noexcept
 }
 
 template<typename T>
-inline void Keyboard::TrimBuffer(std::queue<T> buffer) noexcept
+inline void Keyboard::TrimBuffer(std::queue<T>& buffer) noexcept
 {
-	while (buffer.size() < bufferSize) 
+	while (buffer.size() > bufferSize) 
 	{
 		buffer.pop();
 	}

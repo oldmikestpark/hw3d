@@ -70,7 +70,7 @@ private:
 	void OnChar(char character) noexcept;
 	void ClearState() noexcept;
 	template<typename T>
-	static void TrimBuffer(std::queue<T> buffer) noexcept;
+	static void TrimBuffer(std::queue<T>& buffer) noexcept;
 private:
 	static constexpr unsigned int nKeys = 256u;
 	static constexpr unsigned int bufferSize = 16u;
