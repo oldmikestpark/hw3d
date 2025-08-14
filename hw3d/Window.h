@@ -2,6 +2,7 @@
 
 #include "ChiliWin.h"
 #include "ChiliException.h"
+#include "Keyboard.h"
 
 class Window 
 {
@@ -42,6 +43,8 @@ private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+public:
+	static Keyboard kbd;
 private:
 	int width;
 	int height;

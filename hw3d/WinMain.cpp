@@ -9,7 +9,6 @@ int CALLBACK WinMain(
 	try
 	{
 		Window wnd(800, 300, "Donkey Fart Box");
-		Window wnd2(200, 650, "Donkey Fart Box2");
 
 		// message pump
 		MSG msg;
@@ -19,6 +18,10 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			if (wnd.kbd.KeyIsPressed(VK_SPACE)) 
+			{
+				MessageBox(nullptr, "Something Happon!", "Space Key Was Pressed", MB_OK | MB_ICONEXCLAMATION);
+			}
 		}
 
 		if (gResult == -1)
