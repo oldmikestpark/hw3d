@@ -9,24 +9,13 @@ App::App()
 
 int App::Go()
 {
-	MSG msg;
-	BOOL gResult;
-
-	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+	while (true) 
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-
+		if (const auto ecode = Window::ProcessMessage()) 
+		{
+			return *ecode;
+		}
 		DoFrame();
-	}
-
-	if (gResult == -1)
-	{
-		return -1;
-	}
-	else
-	{
-		return (int)msg.wParam;
 	}
 }
 
