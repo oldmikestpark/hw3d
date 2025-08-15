@@ -61,7 +61,7 @@ Window::Window(int width, int height, const char* name)
 	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0)
 	{
 		throw CHWND_LAST_EXCEPT();
-	};
+	}
 	// Create window & get hWnd
 	hWnd = CreateWindowExA(
 		0, WindowClass::GetName(), name,
@@ -84,7 +84,7 @@ Window::~Window()
 
 void Window::SetWindowTitle(const std::string& title)
 {
-	if (SetWindowText(hWnd, title.c_str())) 
+	if (SetWindowText(hWnd, title.c_str()) == 0) 
 	{
 		throw CHWND_LAST_EXCEPT();
 	}
