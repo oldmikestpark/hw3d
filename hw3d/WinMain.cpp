@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "App.h"
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -11,23 +12,7 @@ int CALLBACK WinMain(
 		Window wnd(800, 300, "Donkey Fart Box");
 
 		// message pump
-		MSG msg;
-		BOOL gResult;
-
-		while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-
-		if (gResult == -1)
-		{
-			return -1;
-		}
-		else
-		{
-			return (int)msg.wParam;
-		}
+		return App{}.Go();
 	}
 	catch (const ChiliException& e) 
 	{
