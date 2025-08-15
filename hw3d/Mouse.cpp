@@ -1,4 +1,5 @@
 #include "Mouse.h"
+#include <windows.h>
 
 bool Mouse::LeftIsPressed() const noexcept
 {
@@ -100,6 +101,21 @@ void Mouse::OnWheelDown(int x, int y) noexcept
 {
     buffer.push(Mouse::Event(Mouse::Event::Type::WheelDown, *this));
     TrimBuffer();
+}
+
+void Mouse::OnWheelDelta(int x, int y, int delta) noexcept
+{
+    wheelDeltaCarry += delta;
+    while (wheelDeltaCarry >= WHEEL_DELTA) 
+    {
+        wheelDeltaCarry -= WHEEL_DELTA;
+        OnWheelUp(x, y);
+    }
+    while (wheelDeltaCarry <= -WHEEL_DELTA) 
+    {
+        wheelDeltaCarry += WHEEL_DELTA;
+        OnWheelDown(x, y);
+    }
 }
 
 void Mouse::OnMouseEnter() noexcept
