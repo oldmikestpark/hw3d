@@ -105,7 +105,7 @@ LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPAR
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
 
 		// 将窗口过程设置为常规处理函数
-		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&Window::HandleMsgThunk));
+		SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::HandleMsgThunk));
 
 		// 转发消息到Window对象的处理函数
 		return pWnd->HandleMsg(hWnd, msg, wParam, lParam);
@@ -155,7 +155,7 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 	case WM_MOUSEMOVE:
 	{
 		const POINTS pt = MAKEPOINTS(lParam);
-		if (pt.x > 0 && pt.x < width && pt.y > 0 && pt.y < height) 
+		if (pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height) 
 		{
 			mouse.OnMouseMove(pt.x, pt.y);
 			if (!mouse.IsInWindow()) 
