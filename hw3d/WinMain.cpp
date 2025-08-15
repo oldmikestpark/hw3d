@@ -9,9 +9,6 @@ int CALLBACK WinMain(
 {
 	try
 	{
-		Window wnd(800, 300, "Donkey Fart Box");
-
-		// message pump
 		return App{}.Go();
 	}
 	catch (const ChiliException& e) 
