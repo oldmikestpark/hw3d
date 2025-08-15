@@ -1,5 +1,4 @@
 #include "Window.h"
-#include <sstream>
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -19,21 +18,6 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
-			while (!wnd.mouse.IsEmpty()) 
-			{
-				const auto e = wnd.mouse.Read();
-				switch (e.GetType()) 
-				{
-				case Mouse::Event::Type::Leave:
-					wnd.SetWindowTitle("Gone!!!!");
-					break;
-				case Mouse::Event::Type::Move:
-					std::ostringstream oss;
-					oss << "Mouse moved to (" << e.GetPosX() << ", " << e.GetPosY() << ")";
-					wnd.SetWindowTitle(oss.str());
-					break;
-				}
-			}
 		}
 
 		if (gResult == -1)
