@@ -12,5 +12,4 @@ private:
 	void DoFrame();
 private:
 	Window wnd;
-	ChiliTimer timer;
 };
