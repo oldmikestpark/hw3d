@@ -3,6 +3,7 @@
 #include "ChiliWin.h"
 #include "ChiliException.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 
 class Window 
 {
@@ -45,6 +46,7 @@ private:
 	static LRESULT CALLBACK HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 public:
 	static Keyboard kbd;
+	static Mouse mouse;
 private:
 	int width;
 	int height;

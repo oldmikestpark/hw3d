@@ -4,6 +4,7 @@
 
 Window::WindowClass Window::WindowClass::wndClass;
 Keyboard Window::kbd;
+Mouse Window::mouse;
 
 const char* Window::WindowClass::GetName() noexcept
 {
@@ -140,6 +141,52 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		kbd.OnChar(static_cast<unsigned char>(wParam));
 		break;
 		/************** END KEYBOARD MESSAGES **************/
+
+		/************** MOUSE MESSAGES ****************/
+	case WM_MOUSEMOVE:
+	{
+		POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnMouseMove(pt.x, pt.y);
+		break;
+	}
+	case WM_LBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnLeftPressed(pt.x, pt.y);
+		break;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnRightPressed(pt.x, pt.y);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnLeftReleased(pt.x, pt.y);
+		break;
+	}
+	case WM_RBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnRightReleased(pt.x, pt.y);
+		break;
+	}
+	case WM_MOUSEWHEEL:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		{
+			mouse.OnWheelUp(pt.x, pt.y);
+		}
+		if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+		{
+			mouse.OnWheelUp(pt.x, pt.y);
+		}
+		break;
+	}
+		/************** END MOUSE MESSAGES ****************/
 	}
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
