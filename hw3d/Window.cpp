@@ -3,8 +3,6 @@
 #include "Resource.h"
 
 Window::WindowClass Window::WindowClass::wndClass;
-Keyboard Window::kbd;
-Mouse Window::mouse;
 
 const char* Window::WindowClass::GetName() noexcept
 {
@@ -25,7 +23,7 @@ Window::WindowClass::WindowClass() noexcept
 	// register window class
 	wc.cbSize = sizeof(wc);
 	wc.style = CS_OWNDC;
-	wc.lpfnWndProc = HandleMsg;
+	wc.lpfnWndProc = HandleMsgSetup;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = GetInstance();
@@ -157,7 +155,27 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 	case WM_MOUSEMOVE:
 	{
 		const POINTS pt = MAKEPOINTS(lParam);
-		mouse.OnMouseMove(pt.x, pt.y);
+		if (pt.x > 0 && pt.x < width && pt.y > 0 && pt.y < height) 
+		{
+			mouse.OnMouseMove(pt.x, pt.y);
+			if (!mouse.IsInWindow()) 
+			{
+				SetCapture(hWnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		else 
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON)) 
+			{
+				mouse.OnMouseMove(pt.x, pt.y);
+			}
+			else 
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeave();
+			}
+		}
 		break;
 	}
 	case WM_LBUTTONDOWN:

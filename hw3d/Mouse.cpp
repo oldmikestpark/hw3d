@@ -25,6 +25,11 @@ int Mouse::GetPosY() const noexcept
     return y;
 }
 
+bool Mouse::IsInWindow() const noexcept
+{
+    return isInWindow;
+}
+
 Mouse::Event Mouse::Read() noexcept
 {
     if (buffer.size() > 0u) 
@@ -94,6 +99,22 @@ void Mouse::OnWheelUp(int x, int y) noexcept
 void Mouse::OnWheelDown(int x, int y) noexcept
 {
     buffer.push(Mouse::Event(Mouse::Event::Type::WheelDown, *this));
+    TrimBuffer();
+}
+
+void Mouse::OnMouseEnter() noexcept
+{
+    isInWindow = true;
+
+    buffer.push(Mouse::Event(Mouse::Event::Type::Enter, *this));
+    TrimBuffer();
+}
+
+void Mouse::OnMouseLeave() noexcept
+{
+    isInWindow = false;
+
+    buffer.push(Mouse::Event(Mouse::Event::Type::Leave, *this));
     TrimBuffer();
 }
 
