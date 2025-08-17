@@ -93,7 +93,7 @@ void Window::SetWindowTitle(const std::string& title)
 	}
 }
 
-std::optional<int> Window::ProcessMessage()
+std::optional<int> Window::ProcessMessage() noexcept
 {
 	MSG msg;
 
@@ -112,6 +112,10 @@ std::optional<int> Window::ProcessMessage()
 
 Graphics& Window::Gfx()
 {
+	if (!pGfx) 
+	{
+		throw CHWND_NOGFX_EXCEPT();
+	}
 	return *pGfx;
 }
 
@@ -238,23 +242,23 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-Window::Exception::Exception(int line, const char* file, HRESULT hr) noexcept
+Window::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
 	:
-	ChiliException(line, file),
+	Exception(line, file),
 	hr(hr)
 {}
 
-const char* Window::Exception::what() const noexcept
+const char* Window::HrException::what() const noexcept
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl
 		<< "[Error Code]" << GetErrorCode() << std::endl
-		<< "[Description]" << GetErrorString() << std::endl;
+		<< "[Description]" << GetErrorDescription() << std::endl;
 	whatBuffer = oss.str();
 	return whatBuffer.c_str();
 }
 
-const char* Window::Exception::GetType() const noexcept
+const char* Window::HrException::GetType() const noexcept
 {
 	return "Chili Window Exception";
 }
@@ -262,7 +266,7 @@ const char* Window::Exception::GetType() const noexcept
 std::string Window::Exception::TranslateErrorCode(HRESULT hr) noexcept
 {
 	char* pMsgBuf = nullptr;
-	DWORD nMsgLen = FormatMessageA(
+	const DWORD nMsgLen = FormatMessage(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 		nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
@@ -277,12 +281,17 @@ std::string Window::Exception::TranslateErrorCode(HRESULT hr) noexcept
 	return errorString;
 }
 
-HRESULT Window::Exception::GetErrorCode() const noexcept
+HRESULT Window::HrException::HrException::GetErrorCode() const noexcept
 {
 	return hr;
 }
 
-std::string Window::Exception::GetErrorString() const noexcept
+std::string Window::HrException::GetErrorDescription() const noexcept
 {
-	return TranslateErrorCode(hr);
+	return Exception::TranslateErrorCode(hr);
+}
+
+const char* Window::NoGfxException::GetType() const noexcept
+{
+	return "Chili Window Exception [No Graphics]";
 }
