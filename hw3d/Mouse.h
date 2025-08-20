@@ -1,6 +1,7 @@
 #pragma once
 
 #include <queue>
+#include <optional>
 
 class Mouse 
 {
@@ -20,7 +21,6 @@ public:
 			Move,
 			Enter,
 			Leave,
-			Invalid
 		};
 	private:
 		Type type;
@@ -29,15 +29,6 @@ public:
 		int x;
 		int y;
 	public:
-		Event() noexcept
-			:
-			type(Type::Invalid),
-			leftIsPressed(false),
-			rightIsPressed(false),
-			x(0),
-			y(0)
-		{}
-
 		Event(Type type, Mouse& parent)
 			:
 			type(type),
@@ -72,11 +63,6 @@ public:
 			return y;
 		}
 
-		bool IsValid() const noexcept 
-		{
-			return type != Type::Invalid;
-		}
-
 		std::pair<int, int> GetPos() const noexcept
 		{
 			return { x, y };
@@ -92,7 +78,7 @@ public:
 	int GetPosX() const noexcept;
 	int GetPosY() const noexcept;
 	bool IsInWindow() const noexcept;
-	Mouse::Event Read() noexcept;
+	std::optional<Mouse::Event> Read() noexcept;
 	bool IsEmpty() const noexcept 
 	{
 		return buffer.empty();

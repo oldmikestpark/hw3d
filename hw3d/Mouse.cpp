@@ -31,7 +31,7 @@ bool Mouse::IsInWindow() const noexcept
     return isInWindow;
 }
 
-Mouse::Event Mouse::Read() noexcept
+std::optional<Mouse::Event> Mouse::Read() noexcept
 {
     if (buffer.size() > 0u) 
     {
@@ -41,7 +41,7 @@ Mouse::Event Mouse::Read() noexcept
     }
     else 
     {
-        return Mouse::Event();
+        return {};
     }
 }
 
