@@ -1,5 +1,5 @@
 #include "Mouse.h"
-#include <windows.h>
+#include "ChiliWin.h"
 
 bool Mouse::LeftIsPressed() const noexcept
 {
