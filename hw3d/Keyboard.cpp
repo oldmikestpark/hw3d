@@ -34,7 +34,7 @@ std::optional<char> Keyboard::ReadChar() noexcept
 	}
 	else 
 	{
-		return 0;
+		return {};
 	}
 }
 
