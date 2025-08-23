@@ -7,6 +7,7 @@
 #include "Graphics.h"
 #include <optional>
 #include <memory>
+#include "WindowsThrowMacros.h"
 
 class Window 
 {
@@ -70,8 +71,3 @@ private:
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
 };
-
-// error exception help macro
-#define CHWND_EXCEPT(hr) Window::HrException(__LINE__, __FILE__, (hr))
-#define CHWND_LAST_EXCEPT() Window::HrException(__LINE__, __FILE__, GetLastError())
-#define CHWND_NOGFX_EXCEPT() Window::NoGfxException(__LINE__, __FILE__)
