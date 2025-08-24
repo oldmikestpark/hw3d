@@ -1,4 +1,5 @@
 #include "IndexBuffer.h"
+#include "GraphicsThrowMacros.h"
 
 IndexBuffer::IndexBuffer(Graphics& gfx, const std::vector<unsigned short>& indices)
 	:
@@ -20,7 +21,7 @@ IndexBuffer::IndexBuffer(Graphics& gfx, const std::vector<unsigned short>& indic
 
 void IndexBuffer::Bind(Graphics& gfx) noexcept
 {
-	GetContex(gfx)->IASetIndexBuffer(pIndexBuffer.Get(), DXGI_FORMAT_R16_FLOAT, 0u);
+	GetContex(gfx)->IASetIndexBuffer(pIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
 }
 
 UINT IndexBuffer::GetCount() const noexcept

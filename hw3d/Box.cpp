@@ -99,12 +99,12 @@ Box::Box(Graphics& gfx, std::mt19937& rng,
 
 void Box::Update(float dt) noexcept
 {
-	roll = droll * dt;
-	pitch = dpitch * dt;
-	yaw = dyaw * dt;
-	theta = dtheta * dt;
-	phi = dphi * dt;
-	chi = dchi * dt;
+	roll += droll * dt;
+	pitch += dpitch * dt;
+	yaw += dyaw * dt;
+	theta += dtheta * dt;
+	phi += dphi * dt;
+	chi += dchi * dt;
 }
 
 DirectX::XMMATRIX Box::GetTransformXM() const noexcept
