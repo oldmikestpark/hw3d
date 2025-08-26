@@ -28,6 +28,9 @@
     <Filter Include="头文件\Drawable">
       <UniqueIdentifier>{0675b9ff-ab61-4272-8ade-2b97a958ad54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Geometry">
+      <UniqueIdentifier>{821c35ae-c524-4c43-87ab-6e8b96ce3592}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -91,6 +94,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Pyramid.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -177,6 +183,30 @@
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="DrawableBase.h">
+      <Filter>头文件\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexedTriangleList.h">
+      <Filter>头文件\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>头文件\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliMath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>头文件\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Prism.h">
+      <Filter>头文件\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>头文件\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Cone.h">
+      <Filter>头文件\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Pyramid.h">
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
