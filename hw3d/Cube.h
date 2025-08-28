@@ -3,7 +3,7 @@
 #include <DirectXMath.h>
 #include "ChiliMath.h"
 
-class Cube 
+class Cube
 {
 public:
 	template<class T>

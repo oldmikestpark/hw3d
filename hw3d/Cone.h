@@ -47,9 +47,9 @@ public:
 		// cone indices
 		for (unsigned short iLong = 0; iLong < longDiv; iLong++) 
 		{
-			indices.push_back(iTip);
-			indices.push_back((iLong + 1) % longDiv);
 			indices.push_back(iLong);
+			indices.push_back((iLong + 1) % longDiv);
+			indices.push_back(iTip);
 		}
 
 		return { std::move(vertices), std::move(indices) };

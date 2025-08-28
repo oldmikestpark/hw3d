@@ -99,6 +99,9 @@
     <ClCompile Include="Pyramid.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Melon.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsMessageMap.h">
@@ -209,6 +212,9 @@
     <ClInclude Include="Pyramid.h">
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="Melon.h">
+      <Filter>头文件\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="chili.ico">
@@ -232,10 +238,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
+    <FxCompile Include="ColorIndexVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader.hlsl">
+    <FxCompile Include="ColorIndexPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorBlendVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorBlendPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
