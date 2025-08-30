@@ -18,5 +18,6 @@ private:
 	ChiliTimer timer;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
 	std::vector<std::unique_ptr<class Melon>> melons;
+	bool show_demo_window = true;
 	static constexpr size_t nDrawable = 180;
 };
