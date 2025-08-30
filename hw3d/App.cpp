@@ -87,7 +87,7 @@ App::App()
 
 void App::DoFrame()
 {
-	const auto dt = timer.Mark();
+	const auto dt = timer.Mark() * speed_factor;
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 	for (auto& b : drawables)
 	{
@@ -95,11 +95,15 @@ void App::DoFrame()
 		b->Draw(wnd.Gfx());
 	}
 
-	// 1. demo window
+	// 1. Simulation Speed Menu
 	{
-		if (show_demo_window) 
+		static char buffer[1024];
+		if (ImGui::Begin("Simulation Speed"))
 		{
-			ImGui::ShowDemoWindow(&show_demo_window);
+			ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
+			ImGui::Text("Application average % .3f ms / frame(% .1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+			ImGui::End();
 		}
 	}
 
