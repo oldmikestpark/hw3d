@@ -171,6 +171,16 @@ DirectX::FXMMATRIX Graphics::GetProjection() const noexcept
 	return projection;
 }
 
+void Graphics::SetCamera(DirectX::FXMMATRIX cam) noexcept
+{
+	camera = cam;
+}
+
+DirectX::FXMMATRIX Graphics::GetCamera() const noexcept
+{
+	return camera;
+}
+
 void Graphics::EnableImgui() noexcept
 {
 	imguiEnabled = true;

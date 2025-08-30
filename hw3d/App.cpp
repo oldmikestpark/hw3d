@@ -14,6 +14,7 @@
 #include "imgui/imgui.h"
 
 GDIPlusManager gdipm;
+namespace dx = DirectX;
 
 App::App()
 	:
@@ -82,7 +83,8 @@ App::App()
 	drawables.reserve(nDrawable);
 	std::generate_n(std::back_inserter(drawables), nDrawable, Factory{ wnd.Gfx() });
 
-	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx().SetCamera(dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 }
 
 void App::DoFrame()
