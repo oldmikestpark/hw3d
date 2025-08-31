@@ -164,7 +164,7 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 	{
 		return true;
 	}
-	const auto imio = ImGui::GetIO();
+	const auto& imio = ImGui::GetIO();
 
 	switch (msg) 
 	{
