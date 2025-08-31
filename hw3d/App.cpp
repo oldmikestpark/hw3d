@@ -84,11 +84,12 @@ App::App()
 	std::generate_n(std::back_inserter(drawables), nDrawable, Factory{ wnd.Gfx() });
 
 	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
-	wnd.Gfx().SetCamera(dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 }
 
 void App::DoFrame()
 {
+	wnd.Gfx().SetCamera(cam.GetMatrix());
+
 	const auto dt = timer.Mark() * speed_factor;
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
 	for (auto& b : drawables)
@@ -109,6 +110,9 @@ void App::DoFrame()
 			ImGui::End();
 		}
 	}
+
+	// 2. camera menu
+	cam.SpawnControlWindow();
 
 	wnd.Gfx().EndFrame();
 }
