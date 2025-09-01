@@ -4,6 +4,7 @@
 #include "ChiliTimer.h"
 #include "ImguiManager.h"
 #include "Camera.h"
+#include "PointLight.h"
 
 class App 
 {
@@ -19,7 +20,7 @@ private:
 	Window wnd;
 	ChiliTimer timer;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
-	std::vector<std::unique_ptr<class Melon>> melons;
+	PointLight light = PointLight(wnd.Gfx());
 	float speed_factor = 1.0f;
 	static constexpr size_t nDrawable = 180;
 };

@@ -2,10 +2,6 @@
 #include <sstream>
 #include <iomanip>
 #include "Box.h"
-#include "Pyramid.h"
-#include "Melon.h"
-#include "Sheet.h"
-#include "SkinnedBox.h"
 #include <memory>
 #include "ChiliMath.h"
 #include <algorithm>
@@ -29,43 +25,12 @@ App::App()
 		{}
 		std::unique_ptr<Drawable> operator()()
 		{
-			switch (typedist(rng))
-			{
-			case 0:
-				return std::make_unique<Pyramid>(
-					gfx, rng,
-					adist, ddist,
-					odist, rdist
-				);
-			case 1:
-				return std::make_unique<Box>(
-					gfx, rng,
-					adist, ddist,
-					odist, rdist,
-					bdist
-				);
-			case 2:
-				return std::make_unique<Melon>(
-					gfx, rng,
-					adist, ddist,
-					odist, rdist,
-					longdist, latdist
-				);
-			case 3:
-				return std::make_unique<Sheet>(
-					gfx, rng,
-					adist, ddist,
-					odist, rdist
-				);
-			case 4:
-				return std::make_unique<SkinnedBox>(
-					gfx, rng, adist, ddist,
-					odist, rdist
-				);
-			default:
-				assert(false && "bad drawable type in factory");
-				return {};
-			}
+			return std::make_unique<Box>(
+				gfx, rng,
+				adist, ddist,
+				odist, rdist,
+				bdist
+			);
 		}
 	private:
 		Graphics& gfx;
@@ -75,9 +40,6 @@ App::App()
 		std::uniform_real_distribution<float> odist{ 0.0f, 3.1415f * 0.08f };
 		std::uniform_real_distribution<float> rdist{ 6.0f, 20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
-		std::uniform_int_distribution<int> longdist{ 10, 40 };
-		std::uniform_int_distribution<int> latdist{5, 20};
-		std::uniform_int_distribution<int> typedist{ 0, 4 };
 	};
 
 	drawables.reserve(nDrawable);
@@ -88,15 +50,16 @@ App::App()
 
 void App::DoFrame()
 {
-	wnd.Gfx().SetCamera(cam.GetMatrix());
-
 	const auto dt = timer.Mark() * speed_factor;
 	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
+	wnd.Gfx().SetCamera(cam.GetMatrix());
+	light.Bind(wnd.Gfx());
 	for (auto& b : drawables)
 	{
 		b->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		b->Draw(wnd.Gfx());
 	}
+	light.Draw(wnd.Gfx());
 
 	// 1. Simulation Speed Menu
 	{
@@ -106,13 +69,15 @@ void App::DoFrame()
 			ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
 			ImGui::Text("Application average % .3f ms / frame(% .1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::Text("Status: %s", wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING (hold spacebar to pause)");
-
-			ImGui::End();
 		}
+		ImGui::End();
 	}
 
 	// 2. camera menu
 	cam.SpawnControlWindow();
+
+	// 3. light menu
+	light.SpawnControlWindow();
 
 	wnd.Gfx().EndFrame();
 }
