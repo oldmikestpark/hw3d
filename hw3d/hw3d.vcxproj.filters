@@ -320,6 +320,9 @@
     <ClInclude Include="SolidSphere.h">
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="TestObject.h">
+      <Filter>头文件\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="chili.ico">
