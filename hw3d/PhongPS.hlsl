@@ -1,15 +1,14 @@
 cbuffer LightCBuffer
 {
     float3 lightPos;
+    static const float3 materialColor;
+    static const float3 ambient;
+    static const float3 diffuseColor;
+    static const float diffuseIntensity;
+    static const float attConst;
+    static const float attLin;
+    static const float attQuau;
 };
-
-static const float3 materialColor = { 0.7f, 0.7f, 0.9f };
-static const float3 ambient = { 0.05f, 0.05f, 0.05f };
-static const float3 diffuseColor = { 1.0f, 1.0f, 1.0f };
-static const float diffuseIntensity = 1.0f;
-static const float attConst = 1.0f;
-static const float attLin = 0.045;
-static const float attQuau = 0.0075;
 
 float4 main(float3 worldPos : Position, float3 n : Normal) : SV_Target
 {
