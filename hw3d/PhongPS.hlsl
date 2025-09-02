@@ -27,8 +27,8 @@ float4 main(float3 worldPos : Position, float3 n : Normal) : SV_Target
     // diffuse intensity
     const float diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(n, dirTol));
     // reflected light vector
-    const float3 w = n * dot(n, dirTol);
-    const float3 r = w * 2.0f - dirTol;
+    const float3 w = n * dot(n, vTol);
+    const float3 r = w * 2.0f - vTol;
     // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
     const float3 specular = (diffuseColor * diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(r), normalize(worldPos))), specularPower);
     // final color
