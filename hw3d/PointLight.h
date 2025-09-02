@@ -18,10 +18,10 @@ private:
 		alignas(16) DirectX::XMFLOAT3 materialColor;
 		alignas(16) DirectX::XMFLOAT3 ambient;
 		alignas(16) DirectX::XMFLOAT3 diffuseColor;
-		float diffuseIndensity;
+		float diffuseIntensity;
 		float attConst;
 		float attLin;
-		float attQuau;
+		float attQuad;
 	};
 private:
 	PointLightCBuf cbData;

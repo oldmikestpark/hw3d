@@ -1,13 +1,13 @@
 cbuffer LightCBuffer
 {
     float3 lightPos;
-    static const float3 materialColor;
-    static const float3 ambient;
-    static const float3 diffuseColor;
-    static const float diffuseIntensity;
-    static const float attConst;
-    static const float attLin;
-    static const float attQuau;
+    float3 materialColor;
+    float3 ambient;
+    float3 diffuseColor;
+    float diffuseIntensity;
+    float attConst;
+    float attLin;
+    float attQuad;
 };
 
 float4 main(float3 worldPos : Position, float3 n : Normal) : SV_Target
@@ -17,7 +17,7 @@ float4 main(float3 worldPos : Position, float3 n : Normal) : SV_Target
     const float distTol = length(vTol);
     const float3 dirTol = vTol / distTol;
     // diffuse attenuation
-    const float att = 1 / (attConst + attLin * distTol + attQuau * (distTol * distTol));
+    const float att = 1 / (attConst + attLin * distTol + attQuad * (distTol * distTol));
     // diffuse intensity
     const float diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(n, dirTol));
     // final color
