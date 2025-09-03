@@ -3,6 +3,7 @@
 #include <iomanip>
 #include "Box.h"
 #include "Cylinder.h"
+#include "Pyramid.h"
 #include <memory>
 #include "ChiliMath.h"
 #include <algorithm>
@@ -44,6 +45,13 @@ App::App()
 					odist, rdist,
 					tdist
 				);
+			case 2:
+				return std::make_unique<Pyramid>(
+					gfx, rng,
+					adist, ddist,
+					odist, rdist,
+					tdist
+				);
 			default:
 				assert(false && "impossible drawable option in factory");
 				return {};
@@ -58,7 +66,7 @@ App::App()
 		std::uniform_real_distribution<float> rdist{ 6.0f, 20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
 		std::uniform_real_distribution<float> cdist{ 0.0f, 1.0f };
-		std::uniform_int_distribution<int> sdist{ 0, 1 };
+		std::uniform_int_distribution<int> sdist{ 0, 2 };
 		std::uniform_int_distribution<int> tdist{ 3, 30 };
 	};
 
