@@ -4,6 +4,7 @@
 #include "Box.h"
 #include "Cylinder.h"
 #include "Pyramid.h"
+#include "SkinnedBox.h"
 #include <memory>
 #include "ChiliMath.h"
 #include <algorithm>
@@ -52,6 +53,12 @@ App::App()
 					odist, rdist,
 					tdist
 				);
+			case 3:
+				return std::make_unique<SkinnedBox>(
+					gfx, rng,
+					adist, ddist,
+					odist, rdist
+				);
 			default:
 				assert(false && "impossible drawable option in factory");
 				return {};
@@ -66,7 +73,7 @@ App::App()
 		std::uniform_real_distribution<float> rdist{ 6.0f, 20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
 		std::uniform_real_distribution<float> cdist{ 0.0f, 1.0f };
-		std::uniform_int_distribution<int> sdist{ 0, 2 };
+		std::uniform_int_distribution<int> sdist{ 0, 3 };
 		std::uniform_int_distribution<int> tdist{ 3, 30 };
 	};
 
