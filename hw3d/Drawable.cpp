@@ -1,8 +1,6 @@
 #include "Drawable.h"
 #include "IndexBuffer.h"
 #include "GraphicsThrowMacros.h"
-#include <cassert>
-#include <typeinfo>
 
 void Drawable::Draw(Graphics& gfx) const noexcept
 {

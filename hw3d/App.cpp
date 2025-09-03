@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include "Box.h"
+#include "Cylinder.h"
 #include <memory>
 #include "ChiliMath.h"
 #include <algorithm>
@@ -26,12 +27,27 @@ App::App()
 		std::unique_ptr<Drawable> operator()()
 		{
 			const dx::XMFLOAT3 mat = { cdist(rng), cdist(rng), cdist(rng) };
-			return std::make_unique<Box>(
-				gfx, rng,
-				adist, ddist,
-				odist, rdist,
-				bdist, mat
-			);
+
+			switch (sdist(rng))
+			{
+			case 0:
+				return std::make_unique<Box>(
+					gfx, rng,
+					adist, ddist,
+					odist, rdist,
+					bdist, mat
+				);
+			case 1:
+				return std::make_unique<Cylinder>(
+					gfx, rng,
+					adist, ddist,
+					odist, rdist,
+					tdist
+				);
+			default:
+				assert(false && "impossible drawable option in factory");
+				return {};
+			}
 		}
 	private:
 		Graphics& gfx;
@@ -42,6 +58,8 @@ App::App()
 		std::uniform_real_distribution<float> rdist{ 6.0f, 20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
 		std::uniform_real_distribution<float> cdist{ 0.0f, 1.0f };
+		std::uniform_int_distribution<int> sdist{ 0, 1 };
+		std::uniform_int_distribution<int> tdist{ 0, 30 };
 	};
 
 	drawables.reserve(nDrawable);
