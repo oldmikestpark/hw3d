@@ -124,7 +124,39 @@ void App::DoFrame()
 	light.SpawnControlWindow();
 
 	// 4. boxes menu
-	boxes.front()->SpawnControlWindow(69, wnd.Gfx());
+	if (ImGui::Begin("Boxes")) 
+	{
+		using namespace std::string_literals;
+		const auto preview = comboBoxIndex ? std::to_string(*comboBoxIndex) : "Choose a box..."s;
+
+		if (ImGui::BeginCombo("Box Number", preview.c_str())) 
+		{
+			for (int i = 0; i < boxes.size(); i++) 
+			{
+				const bool selected = *comboBoxIndex == 1;
+				if (ImGui::Selectable(std::to_string(i).c_str(), selected)) 
+				{
+					comboBoxIndex = i;
+				}
+				if (selected) 
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		if (ImGui::Button("Spawn Control Window")) 
+		{
+			boxControlIds.insert(*comboBoxIndex);
+			comboBoxIndex.reset();
+		}
+	}
+	ImGui::End();
+	// imgui box attribute control windows
+	for (auto id : boxControlIds) 
+	{
+		boxes[id]->SpawnControlWindow(id, wnd.Gfx());
+	}
 
 	wnd.Gfx().EndFrame();
 }
