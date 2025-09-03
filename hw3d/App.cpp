@@ -59,7 +59,7 @@ App::App()
 		std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
 		std::uniform_real_distribution<float> cdist{ 0.0f, 1.0f };
 		std::uniform_int_distribution<int> sdist{ 0, 1 };
-		std::uniform_int_distribution<int> tdist{ 0, 30 };
+		std::uniform_int_distribution<int> tdist{ 3, 30 };
 	};
 
 	drawables.reserve(nDrawable);
