@@ -71,8 +71,8 @@ AssTest::AssTest(Graphics& gfx, std::mt19937& rng,
 		struct PSMaterialConstant
 		{
 			dx::XMFLOAT3 color;
-			float specularIntensity;
-			float specularPower;
+			float specularIntensity = 0.6f;
+			float specularPower = 30.0f;
 			float padding[3];
 		}materialColor;
 		materialColor.color = material;

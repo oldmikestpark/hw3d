@@ -31,7 +31,7 @@ float4 main(float3 worldPos : Position, float3 n : Normal, uint tid : SV_Primiti
     const float3 w = n * dot(n, vToL);
     const float3 r = w * 2.0f - vToL;
     // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
-    const float3 specular = att * (diffuseColor * diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(-r), normalize(worldPos))), specularPower);
+    const float3 specular = att * (diffuseColor * diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(r), normalize(-worldPos))), specularPower);
     // final color
     return float4(saturate(diffuse + specular + specular) * materialColors[(tid / 2) % 6], 1.0f);
 }
