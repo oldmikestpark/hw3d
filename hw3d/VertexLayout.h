@@ -63,8 +63,6 @@ public:
 			case Float4Color:
 				return sizeof(XMFLOAT4);
 			case BGRAColor:
-				return sizeof(XMFLOAT4);
-			default:
 				return sizeof(unsigned int);
 			}
 			assert("Invalid element type" && false);
@@ -106,6 +104,10 @@ public:
 	{
 		return elements.empty() ? 0u : elements.back().GetOffsetAfter();
 	}
+	size_t GetElementCount() const noexcept 
+	{
+		return elements.size();
+	}
 private:
 	std::vector<Element> elements;
 };
@@ -146,7 +148,7 @@ public:
 		}
 		else if constexpr (Type == VertexLayout::BGRAColor) 
 		{
-			return *reinterpret_cast<XMFLOAT4*>(pAttribute);
+			return *reinterpret_cast<BGRAColor*>(pAttribute);
 		}
 		else 
 		{
@@ -178,7 +180,7 @@ public:
 			SetAttribute<XMFLOAT3>(pAttribute, std::forward<T>(val));
 			break;
 		case VertexLayout::BGRAColor:
-			SetAttribute<XMFLOAT4>(pAttribute, std::forward<T>(val));
+			SetAttribute<BGRAColor>(pAttribute, std::forward<T>(val));
 			break;
 		case VertexLayout::Normal:
 			SetAttribute<XMFLOAT3>(pAttribute, std::forward<T>(val));
@@ -236,6 +238,7 @@ public:
 	template<typename ...Params>
 	void EmplaceBack(Params&&... params) noexcept 
 	{
+		assert(sizeof...(params) == layout.GetElementCount() && "Param could doesn't match number of vertex elements");
 		buffer.resize(buffer.size() + layout.Size());
 		Back().SetAttributeByIndex(0u, std::forward<Params>(params)...);
 	}
