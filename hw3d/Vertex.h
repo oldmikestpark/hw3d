@@ -258,6 +258,10 @@ namespace hw3dexp
 		{
 			return buffer.size() / layout.Size();
 		}
+		size_t SizeBytes() const noexcept 
+		{
+			return buffer.size();
+		}
 		template<typename ...Params>
 		void EmplaceBack(Params&&... params) noexcept
 		{
