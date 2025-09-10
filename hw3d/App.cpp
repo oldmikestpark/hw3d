@@ -15,7 +15,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "VertexLayout.h"
+#include "Vertex.h"
 
 GDIPlusManager gdipm;
 namespace dx = DirectX;
