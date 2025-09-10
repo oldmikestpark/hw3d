@@ -335,6 +335,9 @@
     <ClInclude Include="AssTest.h">
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="VertexLayout.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="chili.ico">

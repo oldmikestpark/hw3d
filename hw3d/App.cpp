@@ -15,14 +15,27 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "VertexLayout.h"
 
 GDIPlusManager gdipm;
 namespace dx = DirectX;
+
+void f() 
+{
+	VertexLayout v1;
+	v1.Append<VertexLayout::Position3D>()
+		.Append<VertexLayout::Normal>();
+	VertexBuffer vb(std::move(v1));
+	vb.EmplaceBack(dx::XMFLOAT3{ 1.0f, 1.0f, 5.0f }, dx::XMFLOAT3{ 2.0f, 1.0f, 4.0f });
+	auto pos = vb[0].Attr<VertexLayout::Position3D>();
+}
 
 App::App()
 	:
 	wnd(800, 600, "The Donkey Fart Box")
 {
+	f();
+
 	Assimp::Importer imp;
 	auto model = imp.ReadFile("Models\\suzanne.obj",
 		aiProcess_Triangulate |
