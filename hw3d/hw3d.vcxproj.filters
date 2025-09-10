@@ -160,7 +160,7 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AssTest.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
