@@ -5,6 +5,7 @@
 #include "ImguiManager.h"
 #include "Camera.h"
 #include "PointLight.h"
+#include "Model.h"
 #include <set>
 
 class App 
@@ -15,19 +16,12 @@ public:
 	~App();
 private:
 	void DoFrame();
-	void SpawnSimulationWindow() noexcept;
-	void SpawnBoxWindowManagerWindow() noexcept;
-	void SpawnBoxWindows() noexcept;
 private:
 	Camera cam;
 	ImguiManager imgui;
 	Window wnd;
 	ChiliTimer timer;
-	std::vector<std::unique_ptr<class Drawable>> drawables;
-	std::vector<class Box*> boxes;
 	PointLight light = PointLight(wnd.Gfx());
 	float speed_factor = 1.0f;
-	static constexpr size_t nDrawable = 180;
-	std::optional<int> comboBoxIndex;
-	std::set<int> boxControlIds;
+	Model nano{ wnd.Gfx(), "Models\\nanosuit.obj" };
 };
