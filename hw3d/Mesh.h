@@ -5,6 +5,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <optional>
 
 using namespace Bind;
 
@@ -24,7 +25,7 @@ class Node
 public:
 	Node(const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept;
-	void ShowTree() const noexcept;
+	void ShowTree(int& nodeIndexTracked, std::optional<int>& selectedIndex) const noexcept;
 private:
 	void AddChild(std::unique_ptr<Node> pChild) noexcept;
 private:
