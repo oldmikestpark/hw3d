@@ -1,7 +1,6 @@
 #include "App.h"
 #include <sstream>
 #include <iomanip>
-#include "AssTest.h"
 #include <memory>
 #include "ChiliMath.h"
 #include <algorithm>
