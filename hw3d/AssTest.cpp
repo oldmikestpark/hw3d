@@ -1,5 +1,5 @@
 #include "AssTest.h"
-#include "BindableBase.h"
+#include "BindableCommant.h"
 #include "GraphicsThrowMacros.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -19,9 +19,9 @@ AssTest::AssTest(Graphics& gfx, std::mt19937& rng,
 
 	if (!IsStaticInitialized()) 
 	{
-		using hw3dexp::VertexLayout;
-		hw3dexp::VertexBuffer vbuf(std::move(
-			hw3dexp::VertexLayout{}
+		using Dvtx::VertexLayout;
+		Dvtx::VertexBuffer vbuf(std::move(
+			Dvtx::VertexLayout{}
 			.Append(VertexLayout::Position3D)
 			.Append(VertexLayout::Normal)
 		));

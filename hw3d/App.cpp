@@ -1,10 +1,6 @@
 #include "App.h"
 #include <sstream>
 #include <iomanip>
-#include "Box.h"
-#include "Cylinder.h"
-#include "Pyramid.h"
-#include "SkinnedBox.h"
 #include "AssTest.h"
 #include <memory>
 #include "ChiliMath.h"

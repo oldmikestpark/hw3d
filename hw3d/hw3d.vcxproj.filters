@@ -75,13 +75,7 @@
     <ClCompile Include="DxgiInfoManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>源文件\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="Drawable.cpp">
-      <Filter>源文件\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="Pyramid.cpp">
       <Filter>源文件\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="Bindable.cpp">
@@ -138,12 +132,6 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Sheet.cpp">
-      <Filter>源文件\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinnedBox.cpp">
-      <Filter>源文件\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="ImguiManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -156,11 +144,14 @@
     <ClCompile Include="SolidSphere.cpp">
       <Filter>源文件\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="Cylinder.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="AssTest.cpp">
       <Filter>源文件\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,7 +203,7 @@
     <ClInclude Include="Bindable.h">
       <Filter>头文件\Bindable</Filter>
     </ClInclude>
-    <ClInclude Include="BindableBase.h">
+    <ClInclude Include="BindableCommant.h">
       <Filter>头文件\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
@@ -238,9 +229,6 @@
     </ClInclude>
     <ClInclude Include="VertexShader.h">
       <Filter>头文件\Bindable</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>头文件\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="Drawable.h">
       <Filter>头文件\Drawable</Filter>
@@ -269,9 +257,6 @@
     <ClInclude Include="Cone.h">
       <Filter>头文件\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Pyramid.h">
-      <Filter>头文件\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="Surface.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -283,12 +268,6 @@
     </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>头文件\Bindable</Filter>
-    </ClInclude>
-    <ClInclude Include="Sheet.h">
-      <Filter>头文件\Drawable</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedBox.h">
-      <Filter>头文件\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>imgui</Filter>
@@ -329,16 +308,16 @@
     <ClInclude Include="TestObject.h">
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="Cylinder.h">
-      <Filter>头文件\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="AssTest.h">
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -364,18 +343,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ColorBlendVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorBlendPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="TextureVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturePS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="PhongPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
@@ -386,21 +353,6 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="SolidVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="IndexedPhongPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="BlendedPhongPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="BlendedPhongVS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturedPhongPS.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturedPhongVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

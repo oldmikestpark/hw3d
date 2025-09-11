@@ -2,6 +2,8 @@
 #include "IndexBuffer.h"
 #include "GraphicsThrowMacros.h"
 
+using namespace Bind;
+
 void Drawable::Draw(Graphics& gfx) const noexcept
 {
 	for (auto& b : binds) 

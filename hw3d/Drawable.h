@@ -2,7 +2,11 @@
 #include "Graphics.h"
 #include <DirectXMath.h>
 
-class Bindable;
+namespace Bind
+{
+	class Bindable;
+	class IndexBuffer;
+}
 
 class Drawable 
 {
@@ -29,11 +33,11 @@ protected:
 		}
 		return nullptr;
 	}
-	void AddBind(std::unique_ptr<Bindable> bind) noexcept;
-	void AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept;
+	void AddBind(std::unique_ptr<Bind::Bindable> bind) noexcept;
+	void AddIndexBuffer(std::unique_ptr<Bind::IndexBuffer> ibuf) noexcept;
 private:
-	virtual const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
+	virtual const std::vector<std::unique_ptr<Bind::Bindable>>& GetStaticBinds() const noexcept = 0;
 private:
-	const class IndexBuffer* pIndexBuffer = nullptr;
-	std::vector<std::unique_ptr<Bindable>> binds;
+	const Bind::IndexBuffer* pIndexBuffer = nullptr;
+	std::vector<std::unique_ptr<Bind::Bindable>> binds;
 };
