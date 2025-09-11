@@ -30,12 +30,17 @@ void App::DoFrame()
 	wnd.Gfx().SetCamera(cam.GetMatrix());
 	light.Bind(wnd.Gfx(), cam.GetMatrix());
 
-	nano.Draw(wnd.Gfx());
+	const auto transform = dx::XMMatrixRotationRollPitchYaw(pos.pitch, pos.yaw, pos.roll) *
+		dx::XMMatrixTranslation(pos.x, pos.y, pos.z);
+	nano.Draw(wnd.Gfx(), transform);
 
 	light.Draw(wnd.Gfx());
 
 	// imgui stuff
 	{
+		// 1.model menu
+		ShowModelWindow();
+
 		// 2. camera menu
 		cam.SpawnControlWindow();
 
@@ -44,6 +49,40 @@ void App::DoFrame()
 	}
 
 	wnd.Gfx().EndFrame();
+}
+
+void App::ShowModelWindow()
+{
+	if (ImGui::Begin("Model")) 
+	{
+		using namespace std::string_literals;
+
+		ImGui::Text("Orientation");
+		ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
+		ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
+		ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
+
+		ImGui::Text("Position");
+		ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
+		ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
+		ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
+
+		if (ImGui::Button("Reset")) 
+		{
+			Reset();
+		}
+	}
+	ImGui::End();
+}
+
+void App::Reset()
+{
+	pos.pitch = 0.0f;
+	pos.yaw = 0.0f;
+	pos.roll = 0.0f;
+	pos.x = 0.0f;
+	pos.y = 0.0f;
+	pos.z = 0.0f;
 }
 
 App::~App()
