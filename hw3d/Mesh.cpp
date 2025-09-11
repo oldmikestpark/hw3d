@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "imgui\imgui.h"
 
 Mesh::Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bindable>> bindPtr)
 {
@@ -34,9 +35,10 @@ DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 	return DirectX::XMLoadFloat4x4(&transform);
 }
 
-Node::Node(std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept
+Node::Node(const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept
 	:
-	meshPtrs(meshPtrs)
+	meshPtrs(meshPtrs),
+	name(name)
 {
 	DirectX::XMStoreFloat4x4(&this->transform, transform);
 }
@@ -53,6 +55,19 @@ void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const no
 	for (const auto& pc : childPtr)
 	{
 		pc->Draw(gfx, built);
+	}
+}
+
+void Node::RenderTree() const noexcept
+{
+	// if tree node expanded, recursively render all children
+	if (ImGui::TreeNode(name.c_str())) 
+	{
+		for (const auto& pChild : childPtr) 
+		{
+			pChild->RenderTree();
+		}
+		ImGui::TreePop();
 	}
 }
 
@@ -78,9 +93,39 @@ Model::Model(Graphics& gfx, const std::string fileName)
 	pRoot = ParseNode(*pScene->mRootNode);
 }
 
-void Model::Draw(Graphics& gfx, DirectX::FXMMATRIX transform) noexcept
+void Model::Draw(Graphics& gfx) const
 {
+	namespace dx = DirectX;
+	const auto transform = dx::XMMatrixRotationRollPitchYaw(pos.pitch, pos.yaw, pos.roll) *
+		dx::XMMatrixTranslation(pos.x, pos.y, pos.z);
 	pRoot->Draw(gfx, transform);
+}
+
+void Model::ShowWindow(const char* windowName) noexcept
+{
+	windowName = windowName ? windowName : "Model";
+	if (ImGui::Begin(windowName)) 
+	{
+		ImGui::Columns(2, nullptr, true);
+		pRoot->RenderTree();
+
+		ImGui::NextColumn();
+		ImGui::Text("Orientation");
+		ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
+		ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
+		ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
+
+		ImGui::Text("Position");
+		ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
+		ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
+		ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
+
+		if (ImGui::Button("Reset"))
+		{
+			Reset();
+		}
+	}
+	ImGui::End();
 }
 
 std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
@@ -154,11 +199,21 @@ std::unique_ptr<Node> Model::ParseNode(const aiNode& node)
 		curMeshPtrs.push_back(meshPtrs.at(meshIdx).get());
 	}
 
-	auto pNode = std::make_unique<Node>(std::move(curMeshPtrs), transform);
+	auto pNode = std::make_unique<Node>(node.mName.C_Str(), std::move(curMeshPtrs), transform);
 	for (size_t i = 0; i < node.mNumChildren; ++i)
 	{
 		pNode->AddChild(ParseNode(*node.mChildren[i]));
 	}
 
 	return pNode;
+}
+
+void Model::Reset() noexcept
+{
+	pos.pitch = 0.0f;
+	pos.yaw = 0.0f;
+	pos.roll = 0.0f;
+	pos.x = 0.0f;
+	pos.y = 0.0f;
+	pos.z = 0.0f;
 }

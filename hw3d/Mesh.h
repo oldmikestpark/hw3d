@@ -22,11 +22,13 @@ class Node
 {
 	friend class Model;
 public:
-	Node(std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept;
+	Node(const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept;
+	void RenderTree() const noexcept;
 private:
 	void AddChild(std::unique_ptr<Node> pChild) noexcept;
 private:
+	std::string name;
 	std::vector<std::unique_ptr<Node>> childPtr;
 	std::vector<Mesh*> meshPtrs;
 	DirectX::XMFLOAT4X4 transform;
@@ -36,12 +38,22 @@ class Model
 {
 public:
 	Model(Graphics& gfx, const std::string fileName);
-	void Draw(Graphics& gfx, DirectX::FXMMATRIX transform) noexcept;
+	void Draw(Graphics& gfx) const;
+	void ShowWindow(const char* windowName = nullptr) noexcept;
 private:
 	std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh);
-
 	std::unique_ptr<Node> ParseNode(const aiNode& node);
+	void Reset() noexcept;
 private:
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
+	struct 
+	{
+		float roll = 0.0f;
+		float pitch = 0.0f;
+		float yaw = 0.0f;
+		float x = 0.0f;
+		float y = 0.0f;
+		float z = 0.0f;
+	} pos;
 };
