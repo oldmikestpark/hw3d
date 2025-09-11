@@ -38,19 +38,20 @@ DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 	return DirectX::XMLoadFloat4x4(&transform);
 }
 
-Node::Node(const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept
+Node::Node(const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noexcept
 	:
 	meshPtrs(meshPtrs),
 	name(name)
 {
-	DirectX::XMStoreFloat4x4(&baseTransform, transform);
+	DirectX::XMStoreFloat4x4(&transform, transform_in);
 	DirectX::XMStoreFloat4x4(&appliedTransform, dx::XMMatrixIdentity());
 }
 
 void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept
 {
-	const auto built = DirectX::XMLoadFloat4x4(&baseTransform) *
+	const auto built = 
 		DirectX::XMLoadFloat4x4(&appliedTransform)* 
+		DirectX::XMLoadFloat4x4(&transform) *
 		accumulatedTransform;
 
 	for (const auto pm : meshPtrs)
