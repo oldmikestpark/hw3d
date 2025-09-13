@@ -129,12 +129,14 @@ void Window::EnableCursor()
 {
 	cursorEnabled = true;
 	ShowCursor();
+	EnableImGuiMouse();
 }
 
 void Window::DisableCursor()
 {
 	cursorEnabled = false;
 	HideCursor();
+	DisableImGuiMouse();
 }
 
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
@@ -335,6 +337,16 @@ void Window::HideCursor()
 void Window::ShowCursor()
 {
 	while (::ShowCursor(TRUE) < 0);
+}
+
+void Window::EnableImGuiMouse()
+{
+	ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+}
+
+void Window::DisableImGuiMouse()
+{
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
 }
 
 Window::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
