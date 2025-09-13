@@ -125,6 +125,18 @@ Graphics& Window::Gfx()
 	return *pGfx;
 }
 
+void Window::EnableCursor()
+{
+	cursorEnabled = true;
+	ShowCursor();
+}
+
+void Window::DisableCursor()
+{
+	cursorEnabled = false;
+	HideCursor();
+}
+
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
 	if (msg == WM_NCCREATE) 
@@ -210,6 +222,17 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		/************** MOUSE MESSAGES ****************/
 	case WM_MOUSEMOVE:
 	{
+		// cursorless exclusive gets first dibs
+		if (!cursorEnabled) 
+		{
+			if (!mouse.IsInWindow()) 
+			{
+				SetCapture(hWnd);
+				mouse.OnMouseEnter();
+				HideCursor();
+			}
+			break;
+		}
 		// stifle this mouse message if imgui wants to capture
 		if (imio.WantCaptureMouse) 
 		{
@@ -302,6 +325,16 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		/************** END MOUSE MESSAGES ****************/
 	}
 	return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+
+void Window::HideCursor()
+{
+	while (::ShowCursor(FALSE) >= 0);
+}
+
+void Window::ShowCursor()
+{
+	while (::ShowCursor(TRUE) < 0);
 }
 
 Window::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
