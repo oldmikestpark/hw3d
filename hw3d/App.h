@@ -16,7 +16,9 @@ public:
 	~App();
 private:
 	void DoFrame();
+	void ShowRawInputWindow();
 private:
+	int x = 0, y = 0;
 	Camera cam;
 	ImguiManager imgui;
 	Window wnd;
