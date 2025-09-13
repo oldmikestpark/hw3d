@@ -199,11 +199,13 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 			{
 				OutputDebugString("activeate => confine\n");
 				ConfineCursor();
+				HideCursor();
 			}
 			else 
 			{
 				OutputDebugString("activeate => free\n");
 				FreeCursor();
+				ShowCursor();
 			}
 		}
 		break;
