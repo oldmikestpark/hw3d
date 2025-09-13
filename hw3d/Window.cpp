@@ -152,6 +152,11 @@ void Window::DisableCursor() noexcept
 	ConfineCursor();
 }
 
+bool Window::CursorEnabled() const noexcept
+{
+	return cursorEnabled;
+}
+
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
 	if (msg == WM_NCCREATE) 
@@ -362,6 +367,10 @@ LRESULT CALLBACK Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		/************** RAW MOUSE MESSAGES ****************/
 	case WM_INPUT:
 	{
+		if (!mouse.RawEnabled()) 
+		{
+			break;
+		}
 		UINT size;
 			// first get the size of the input data
 		if (GetRawInputData(

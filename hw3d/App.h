@@ -18,7 +18,6 @@ private:
 	void DoFrame();
 	void ShowRawInputWindow();
 private:
-	bool cursorEnabled = true;
 	int x = 0, y = 0;
 	Camera cam;
 	ImguiManager imgui;

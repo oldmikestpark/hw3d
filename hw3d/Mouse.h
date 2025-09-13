@@ -89,6 +89,9 @@ public:
 		return buffer.empty();
 	}
 	void Flush() noexcept;
+	void EnableRaw() noexcept;
+	void DisableRaw() noexcept;
+	bool RawEnabled() const noexcept;
 private:
 	void OnLeftPressed(int x, int y) noexcept;
 	void OnRightPressed(int x, int y) noexcept;
@@ -111,6 +114,7 @@ private:
 	bool rightIsPressed = false;
 	bool isInWindow = false;
 	int wheelDeltaCarry = 0;
+	bool rawEnabled = false;
 	std::queue<Event> buffer;
 	std::queue<RawDelta> rawDeltaBuffer;
 };

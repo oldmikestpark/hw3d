@@ -167,4 +167,19 @@ void Mouse::TrimRawInputBuffer() noexcept
     }
 }
 
+void Mouse::EnableRaw() noexcept
+{
+    rawEnabled = true;
+}
+
+void Mouse::DisableRaw() noexcept
+{
+    rawEnabled = false;
+}
+
+bool Mouse::RawEnabled() const noexcept
+{
+    return rawEnabled;
+}
+
 
