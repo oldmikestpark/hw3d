@@ -16,7 +16,6 @@ App::App()
 	wnd(1920, 1080, "The Donkey Fart Box")
 {
 	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 100.0f));
-	wnd.DisableCursor();
 }
 
 void App::DoFrame()
@@ -30,6 +29,23 @@ void App::DoFrame()
 	nano.Draw(wnd.Gfx());
 
 	light.Draw(wnd.Gfx());
+
+	if (const auto e = wnd.kbd.ReadKey()) 
+	{
+		if (e->IsPressed() && e->GetCode() == VK_INSERT) 
+		{
+			if (cursorEnabled == true) 
+			{
+				wnd.DisableCursor();
+				cursorEnabled = false;
+			}
+			else 
+			{
+				wnd.EnableCursor();
+				cursorEnabled = true;
+			}
+		}
+	}
 
 	// imgui stuff
 	{
@@ -59,6 +75,7 @@ void App::ShowRawInputWindow()
 	if (ImGui::Begin("Raw Input")) 
 	{
 		ImGui::Text("Tally : (&d,%d)", x, y);
+		ImGui::Text("Cursor: %s", cursorEnabled ? "Enabled" : "Disabled");
 	}
 	ImGui::End();
 }
