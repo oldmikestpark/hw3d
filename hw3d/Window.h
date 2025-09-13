@@ -58,16 +58,19 @@ public:
 	void SetWindowTitle(const std::string& title);
 	static std::optional<int> ProcessMessage() noexcept;
 	Graphics& Gfx();
-	void EnableCursor();
-	void DisableCursor();
+	void EnableCursor() noexcept;
+	void DisableCursor() noexcept;
 private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT CALLBACK HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
-	void HideCursor();
-	void ShowCursor();
-	void EnableImGuiMouse();
-	void DisableImGuiMouse();
+private:
+	void ConfineCursor() noexcept;
+	void FreeCursor() noexcept;
+	void HideCursor() noexcept;
+	void ShowCursor() noexcept;
+	void EnableImGuiMouse() noexcept;
+	void DisableImGuiMouse() noexcept;
 public:
 	Keyboard kbd;
 	Mouse mouse;
