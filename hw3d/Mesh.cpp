@@ -221,6 +221,10 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 	));
 
 	auto& material = *pMaterials[mesh.mMaterialIndex];
+	for (unsigned int i = 0; i < material.mNumProperties; ++i) 
+	{
+		auto& prop = material.mProperties[i];
+	}
 
 	for (unsigned int i = 0; i < mesh.mNumVertices; ++i)
 	{
