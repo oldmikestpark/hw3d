@@ -121,7 +121,7 @@ public:
 			root.ShowTree(pSelectedNode);
 			if (pSelectedNode != nullptr)
 			{
-				auto& transform = transforms[*selectedIndex];
+				auto& transform = transforms[pSelectedNode->GetId()];
 				ImGui::NextColumn();
 				ImGui::Text("Orientation");
 				ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
