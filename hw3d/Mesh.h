@@ -30,7 +30,7 @@ public:
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
 private:
 	void AddChild(std::unique_ptr<Node> pChild) noexcept;
-	void ShowTree(std::optional<int>& selectedIndex, Node*& pSelectedNode) const noexcept;
+	void ShowTree(Node*& pSelectedNode) const noexcept;
 private:
 	std::string name;
 	int id;

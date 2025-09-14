@@ -76,18 +76,19 @@ void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 	dx::XMStoreFloat4x4(&appliedTransform, transform);
 }
 
-void Node::ShowTree(std::optional<int>& selectedIndex, Node*& pSelectedNode) const noexcept
+void Node::ShowTree(Node*& pSelectedNode) const noexcept
 {
+	// if there is no selected node, set selectedId to an impossible value
+	const int selectedId = (pSelectedNode == nullptr) ? -1 : pSelectedNode->GetId();
 	// build up flags for current node
 	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
-		| ((GetId() == selectedIndex.value_or(-1)) ? ImGuiTreeNodeFlags_Selected : 0)
+		| ((GetId() == selectedId) ? ImGuiTreeNodeFlags_Selected : 0)
 		| ((childPtr.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0);
 	// render this node
 	const auto expanded = ImGui::TreeNodeEx((void*)(intptr_t)GetId(), node_flags, name.c_str());
 	// processing for selecting node
 	if (ImGui::IsItemClicked())
 	{
-		selectedIndex = GetId();
 		pSelectedNode = const_cast<Node*>(this);
 	}
 	// recursive rendering of open node's children
@@ -95,7 +96,7 @@ void Node::ShowTree(std::optional<int>& selectedIndex, Node*& pSelectedNode) con
 	{
 		for (const auto& pChild : childPtr) 
 		{
-			pChild->ShowTree(selectedIndex, pSelectedNode);
+			pChild->ShowTree(pSelectedNode);
 		}
 		ImGui::TreePop();
 	}
@@ -117,7 +118,7 @@ public:
 		if (ImGui::Begin(windowName))
 		{
 			ImGui::Columns(2, nullptr, true);
-			root.ShowTree(selectedIndex, pSelectedNode);
+			root.ShowTree(pSelectedNode);
 			if (pSelectedNode != nullptr)
 			{
 				auto& transform = transforms[*selectedIndex];
@@ -147,7 +148,8 @@ public:
 	}
 	DirectX::XMMATRIX GetTransform() const noexcept 
 	{
-		const auto& transform = transforms.at(*selectedIndex);
+		assert(pSelectedNode != nullptr);
+		const auto& transform = transforms.at(pSelectedNode->GetId());
 		return 
 			DirectX::XMMatrixRotationRollPitchYaw(transform.pitch, transform.yaw, transform.roll) *
 			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
@@ -168,7 +170,6 @@ private:
 	};
 	std::unordered_map<int, TransformParameters> transforms;
 private:
-	std::optional<int> selectedIndex;
 	Node* pSelectedNode;
 };
 
