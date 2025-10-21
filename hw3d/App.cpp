@@ -7,7 +7,8 @@
 #include "Surface.h"
 #include "GDIPlusManager.h"
 #include "imgui/imgui.h"
-#include "Vertex.h"
+#include "VertexBuffer.h"
+#include <string>
 
 GDIPlusManager gdipm;
 namespace dx = DirectX;
@@ -15,7 +16,10 @@ App::App()
 	:
 	wnd(1920, 1080, "The Donkey Fart Box")
 {
+	std::string line("PhongVS.cso");
 	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 100.0f));
+	auto a = Bind::VertexShader::Resolve(wnd.Gfx(), line);
+	auto b = Bind::VertexShader::Resolve(wnd.Gfx(), line);
 }
 
 void App::DoFrame()
