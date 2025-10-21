@@ -230,9 +230,6 @@
     <ClInclude Include="Drawable.h">
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="DrawableBase.h">
-      <Filter>头文件\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="IndexedTriangleList.h">
       <Filter>头文件\Geometry</Filter>
     </ClInclude>

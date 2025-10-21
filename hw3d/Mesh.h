@@ -1,5 +1,5 @@
 #pragma once
-#include "DrawableBase.h"
+#include "Drawable.h"
 #include "BindableCommant.h"
 #include "Vertex.h"
 #include <assimp/Importer.hpp>
@@ -9,10 +9,10 @@
 
 using namespace Bind;
 
-class Mesh : public DrawableBase<Mesh>
+class Mesh : public Drawable
 {
 public:
-	Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bindable>> bindPtr);
+	Mesh(Graphics& gfx, std::vector<std::shared_ptr<Bindable>> bindPtr);
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept;
 private:
