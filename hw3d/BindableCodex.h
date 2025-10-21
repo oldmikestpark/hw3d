@@ -8,30 +8,27 @@ namespace Bind
 	class Codex 
 	{
 	public:
-		static std::shared_ptr<Bindable> Resolve(const std::string& key) 
+		template<class T, typename...Params>
+		static std::shared_ptr<Bindable> Resolve(Graphics& gfx, Params&&...p) 
 		{
-			return Get().Resolve_(key);
-		}
-		static void Store(std::shared_ptr<Bindable> bind) 
-		{
-			return Get().Store_(bind);
+			return Get().Resolve_<T>(gfx, std::forward<Params>(p)...);
 		}
 	private:
-		std::shared_ptr<Bindable> Resolve_(const std::string& key) const
+		template<class T, typename...Params>
+		std::shared_ptr<Bindable> Resolve_(Graphics& gfx, Params&&...p)
 		{
-			auto i = binds.find(key);
+			const auto key = T::GenerateUID(std::forward<Params>(p)...);
+			const auto i = binds.find(key);
 			if (i == binds.end()) 
 			{
-				return {};
+				auto bind = std::make_shared<T>(gfx, std::forward<Params>(p)...);
+				binds[key] = bind;
+				return bind;
 			}
 			else 
 			{
 				return i->second;
 			}
-		}
-		void Store_(std::shared_ptr<Bindable> bind)
-		{
-			binds[bind->GetUID()] = std::move(bind);
 		}
 		static Codex& Get() 
 		{
