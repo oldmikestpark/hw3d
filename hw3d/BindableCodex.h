@@ -2,6 +2,7 @@
 #include "Bindable.h"
 #include <memory>
 #include <unordered_map>
+#include <type_traits>
 
 namespace Bind 
 {
@@ -11,6 +12,7 @@ namespace Bind
 		template<class T, typename...Params>
 		static std::shared_ptr<Bindable> Resolve(Graphics& gfx, Params&&...p) 
 		{
+			static_assert(std::is_base_of<Bindable, T>::value, "Can only resolve classes derived from Bindable");
 			return Get().Resolve_<T>(gfx, std::forward<Params>(p)...);
 		}
 	private:
