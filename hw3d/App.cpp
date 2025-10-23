@@ -28,6 +28,7 @@ void App::DoFrame()
 
 	
 	nano.Draw(wnd.Gfx());
+	nano2.Draw(wnd.Gfx());
 
 	light.Draw(wnd.Gfx());
 
