@@ -23,7 +23,7 @@ namespace Bind
 	{
 		return pBlob.Get();
 	}
-	std::shared_ptr<Bindable> VertexShader::Resolve(Graphics& gfx, const std::string& path)
+	std::shared_ptr<VertexShader> VertexShader::Resolve(Graphics& gfx, const std::string& path)
 	{
 		return Codex::Resolve<VertexShader>(gfx, path);
 	}

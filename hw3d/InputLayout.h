@@ -11,7 +11,7 @@ namespace Bind
 			Dvtx::VertexLayout layout,
 			ID3DBlob* pVertexShaderByteCode
 		);
-		static std::shared_ptr<Bindable> Resolve(
+		static std::shared_ptr<InputLayout> Resolve(
 			Graphics& gfx,
 			const Dvtx::VertexLayout& layout,
 			ID3DBlob* pVertexShaderByteCode
