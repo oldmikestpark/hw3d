@@ -7,6 +7,8 @@ namespace dx = DirectX;
 
 Mesh::Mesh(Graphics& gfx, std::vector<std::shared_ptr<Bindable>> bindPtr)
 {
+	AddBind(Bind::Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+
 	for (auto& pb : bindPtr)
 	{
 		AddBind(std::move(pb));
