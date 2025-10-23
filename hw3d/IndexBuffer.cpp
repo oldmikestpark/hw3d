@@ -38,6 +38,7 @@ namespace Bind
 	std::shared_ptr<IndexBuffer> IndexBuffer::Resolve(Graphics& gfx, std::string tag,
 		std::vector<unsigned short>& indices)
 	{
+		assert(tag != "?");
 		return Codex::Resolve<IndexBuffer>(gfx, tag, indices);
 	}
 	std::string IndexBuffer::GetUID() const noexcept
