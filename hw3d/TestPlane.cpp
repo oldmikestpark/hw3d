@@ -27,7 +27,7 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 		float specularPower = 45.0f;
 		float padding[2];
 	}pmc;
-	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 0u));
+	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
 
