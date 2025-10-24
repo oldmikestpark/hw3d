@@ -15,6 +15,7 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
 	AddBind(Texture::Resolve(gfx, "images\\brick_wall_diffuse.jpg"));
+	AddBind(Texture::Resolve(gfx, "images\\brick_wall_normal.jpg", 1u));
 
 	auto pvs = VertexShader::Resolve(gfx, "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
