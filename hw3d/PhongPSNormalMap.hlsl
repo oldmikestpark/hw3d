@@ -26,7 +26,7 @@ float4 main(float3 worldPos : Position, float3 n : Normal, float2 tc : Texcoord)
 {
     if (normalMappingEnabled)
     {
-        n = nmap.Sample(splr, tc).xyz;
+        n = -nmap.Sample(splr, tc).xyz;
     }
     const float3 vToL = lightPos - worldPos;
     const float distToL = length(vToL);
