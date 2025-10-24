@@ -108,6 +108,9 @@ void App::DoFrame()
 
 		// 4. raw input menu
 		ShowRawInputWindow();
+
+		// 5. block wall menu
+		plane.SpawnControlWindow(wnd.Gfx());
 	}
 
 	wnd.Gfx().EndFrame();
