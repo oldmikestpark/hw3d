@@ -8,7 +8,7 @@ namespace Bind
 	{
 		if (!pPcbuf)
 		{
-			pPcbuf = std::make_unique<PixelConstantBuffer<Transforms>>(gfx, slotV);
+			pPcbuf = std::make_unique<PixelConstantBuffer<Transforms>>(gfx, slotP);
 		}
 	}
 
@@ -24,4 +24,6 @@ namespace Bind
 		pPcbuf->Update(gfx, tf);
 		pPcbuf->Bind(gfx);
 	}
+
+	std::unique_ptr<PixelConstantBuffer<TransformCbuf::Transforms>> TransformCbufDoubleboi::pPcbuf;
 }

@@ -11,6 +11,6 @@ namespace Bind
 	protected:
 		void UpdateBindImpl(Graphics& gfx, const Transforms& tf) noexcept;
 	private:
-		static std::shared_ptr<PixelConstantBuffer<Transforms>> pPcbuf;
+		static std::unique_ptr<PixelConstantBuffer<Transforms>> pPcbuf;
 	};
 }
