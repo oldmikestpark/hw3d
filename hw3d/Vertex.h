@@ -205,9 +205,10 @@ namespace Dvtx
 	class VertexBuffer
 	{
 	public:
-		VertexBuffer(VertexLayout layout) noexcept;
+		VertexBuffer(VertexLayout layout, size_t size = 0u) noexcept;
 		const char* GetData() const noexcept;
 		const VertexLayout& GetLayout() const noexcept;
+		void Resize(size_t newSize) noexcept;
 		size_t Size() const noexcept;
 		size_t SizeBytes() const noexcept;
 		template<typename ...Params>

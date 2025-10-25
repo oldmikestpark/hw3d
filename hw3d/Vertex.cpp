@@ -150,10 +150,12 @@ Dvtx::ConstVertex::ConstVertex(const Vertex& v) noexcept
 	vertex(v)
 {}
 
-Dvtx::VertexBuffer::VertexBuffer(VertexLayout layout) noexcept
+Dvtx::VertexBuffer::VertexBuffer(VertexLayout layout, size_t size) noexcept
 	:
 	layout(std::move(layout))
-{}
+{
+	Resize(size);
+}
 
 const char* Dvtx::VertexBuffer::GetData() const noexcept
 {
@@ -163,6 +165,15 @@ const char* Dvtx::VertexBuffer::GetData() const noexcept
 const VertexLayout& Dvtx::VertexBuffer::GetLayout() const noexcept
 {
 	return layout;
+}
+
+void Dvtx::VertexBuffer::Resize(size_t newSize) noexcept
+{
+	const auto size = Size();
+	if (size < newSize) 
+	{
+		buffer.reserve(buffer.size() + layout.Size() * (newSize - size));
+	}
 }
 
 size_t Dvtx::VertexBuffer::Size() const noexcept
