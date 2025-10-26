@@ -17,12 +17,6 @@ cbuffer ObjectCBuf
     float padding[1];
 };
 
-cbuffer TransformCBuf
-{
-    matrix modelView;
-    matrix modelViewProj;
-};
-
 Texture2D tex;
 Texture2D nmap;
 
