@@ -172,7 +172,7 @@ void Dvtx::VertexBuffer::Resize(size_t newSize) noexcept
 	const auto size = Size();
 	if (size < newSize) 
 	{
-		buffer.reserve(buffer.size() + layout.Size() * (newSize - size));
+		buffer.resize(buffer.size() + layout.Size() * (newSize - size));
 	}
 }
 

@@ -18,7 +18,7 @@ App::App()
 	light(wnd.Gfx()),
 	plane(wnd.Gfx(), 3.0f)
 {
-	plane.SetPos({1.0f, 17.0f, -4.0});
+	plane.SetPos({-1.0f, 17.0f, -4.0});
 	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 40.0f));
 }
 
@@ -109,7 +109,7 @@ void App::DoFrame()
 		// 4. raw input menu
 		ShowRawInputWindow();
 
-		// 5. block wall menu
+		// 5. block wall plane menu
 		plane.SpawnControlWindow(wnd.Gfx());
 	}
 

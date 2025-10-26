@@ -12,7 +12,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 	auto model = Cube::MakeIndependentTextured();
 	model.Transform(dx::XMMatrixScaling(size, size, size));
 	model.SetNormalsIndependentFlat();
-	const auto geometryTag = "$Cube." + std::to_string(size);
+	const auto geometryTag = "$cube." + std::to_string(size);
 	AddBind(VertexBuffer::Resolve(gfx, geometryTag, model.vertices));
 	AddBind(IndexBuffer::Resolve(gfx, geometryTag, model.indices));
 
@@ -27,23 +27,23 @@ TestCube::TestCube(Graphics& gfx, float size)
 
 	AddBind(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 
-	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-
 	AddBind(InputLayout::Resolve(gfx, model.vertices.GetLayout(), pvsbc));
+	
+	AddBind(Topology::Resolve(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 	AddBind(std::make_shared<TransformCbufDoubleboi>(gfx, *this, 0u, 2u));
 }
 
 void TestCube::SetPos(DirectX::XMFLOAT3 pos) noexcept
 {
-	this->pos;
+	this->pos = pos;
 }
 
 void TestCube::SetRotation(float roll, float pitch, float yaw) noexcept
 {
-	this->roll;
-	this->pitch;
-	this->yaw;
+	this->roll = roll;
+	this->pitch = pitch;
+	this->yaw = yaw;
 }
 
 DirectX::XMMATRIX TestCube::GetTransformXM() const noexcept
