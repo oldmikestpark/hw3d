@@ -24,9 +24,10 @@ private:
 	ImguiManager imgui;
 	Window wnd;
 	ChiliTimer timer;
-	PointLight light = PointLight(wnd.Gfx());
+	PointLight light;
 	float speed_factor = 1.0f;
-	Model wall{wnd.Gfx(), "Models\\brick_wall\\brick_wall.obj"};
-	TestPlane tp{wnd.Gfx(), 1.0f};
+	Model gobber{wnd.Gfx(), "Models\\gobber\\GoblinX.obj"};
+	//Model wall{ wnd.Gfx(),"Models\\brick_wall\\brick_wall.obj" };
+	//TestPlane tp{ wnd.Gfx(),1.0 };
 	// Model nano{ wnd.Gfx(), "Models\\nano_textured\\nanosuit.obj" };
 };
