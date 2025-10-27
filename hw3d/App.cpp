@@ -15,10 +15,8 @@ namespace dx = DirectX;
 App::App()
 	:
 	wnd(1920, 1080, "The Donkey Fart Box"),
-	light(wnd.Gfx()),
-	plane(wnd.Gfx(), 3.0f)
+	light(wnd.Gfx())
 {
-	plane.SetPos({-1.0f, 17.0f, -4.0});
 	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 40.0f));
 }
 
@@ -30,9 +28,8 @@ void App::DoFrame()
 	light.Bind(wnd.Gfx(), cam.GetMatrix());
 
 	
-	nano.Draw(wnd.Gfx());
-	nano2.Draw(wnd.Gfx());
-	plane.Draw(wnd.Gfx());
+	// nano.Draw(wnd.Gfx());
+	wall.Draw(wnd.Gfx());
 
 	light.Draw(wnd.Gfx());
 
@@ -98,7 +95,7 @@ void App::DoFrame()
 	// imgui stuff
 	{
 		// 1.model menu
-		nano.ShowWindow();
+		// nano.ShowWindow();
 
 		// 2. camera menu
 		cam.SpawnControlWindow();
@@ -110,7 +107,10 @@ void App::DoFrame()
 		ShowRawInputWindow();
 
 		// 5. block wall plane menu
-		plane.SpawnControlWindow(wnd.Gfx());
+		// plane.SpawnControlWindow(wnd.Gfx());
+
+		// 6. wall menu
+		wall.ShowWindow("Wall");
 	}
 
 	wnd.Gfx().EndFrame();
