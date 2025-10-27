@@ -150,14 +150,14 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TestPlane.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="TransformCbufDoubleboi.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="TestPlane.cpp">
+      <Filter>源文件\Drawable</Filter>
+    </ClCompile>
     <ClCompile Include="TestCube.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
