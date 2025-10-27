@@ -220,6 +220,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 	bool hasDiffuseMap = false;
 	bool hasNormalMap = false;
 	bool hasSpecularMap = false;
+	bool hasAlphaGloss = false;
 	float shininess = 35.0f;
 	if (mesh.mMaterialIndex >= 0)
 	{
@@ -234,16 +235,20 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		}
 		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str(), 1));
+			auto tex = Texture::Resolve(gfx, base + texFileName.C_Str(), 1);
+			hasAlphaGloss = tex->HasAlpha();
+			bindablePtrs.push_back(std::move(tex));
 			hasSpecularMap = true;
 		}
-		else
+		if(!hasAlphaGloss)
 		{
 			material.Get(AI_MATKEY_SHININESS, shininess);
 		}
 		if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			bindablePtrs.push_back(Texture::Resolve(gfx, base + texFileName.C_Str(), 2));
+			auto tex = Texture::Resolve(gfx, base + texFileName.C_Str(), 2);
+			hasAlphaGloss = tex->HasAlpha();
+			bindablePtrs.push_back(std::move(tex));
 			hasNormalMap = true;
 		}
 		if (hasDiffuseMap || hasNormalMap || hasSpecularMap)
@@ -302,8 +307,12 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		struct PSMaterialConstantFullmonte
 		{
 			BOOL normalMapEnabled = TRUE;
-			float padding[3];
+			BOOL hasGlossMap;
+			float specularPower;
+			float padding[1];
 		}pmc;
+		pmc.specularPower = shininess;
+		pmc.hasGlossMap = hasAlphaGloss ? TRUE : FALSE;
 		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantFullmonte>::Resolve(gfx, pmc, 1u));
 	}
 	else if (hasDiffuseMap && hasNormalMap)
