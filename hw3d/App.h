@@ -27,5 +27,6 @@ private:
 	PointLight light = PointLight(wnd.Gfx());
 	float speed_factor = 1.0f;
 	Model wall{wnd.Gfx(), "Models\\brick_wall\\brick_wall.obj"};
+	TestPlane tp{wnd.Gfx(), 1.0f};
 	// Model nano{ wnd.Gfx(), "Models\\nano_textured\\nanosuit.obj" };
 };

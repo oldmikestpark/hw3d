@@ -201,6 +201,11 @@ void Model::ShowWindow(const char* windowName) noexcept
 Model::~Model() noexcept
 {}
 
+void Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept
+{
+	pRoot->SetAppliedTransform(tf);
+}
+
 std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials)
 {
 	namespace dx = DirectX;
