@@ -97,39 +97,6 @@ void Node::AddChild(std::unique_ptr<Node> pChild) noexcept
 	childPtr.push_back(std::move(pChild));
 }
 
-void Node::ControlMeDaddy(Graphics& gfx, PSMaterialConstantFullmonte& c)
-{
-	if (meshPtrs.empty()) 
-	{
-		return;
-	}
-
-	if (auto pcb = meshPtrs.front()->QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstantFullmonte>>()) 
-	{
-		ImGui::Text("Material");
-
-		bool normalMapEnabled = (bool)c.normalMapEnabled;
-		ImGui::Checkbox("Norm Map", &normalMapEnabled);
-		c.normalMapEnabled = normalMapEnabled ? TRUE : FALSE;
-
-		bool specularMapEnabled = (bool)c.specularMapEnabled;
-		ImGui::Checkbox("Spec Map", &specularMapEnabled);
-		c.specularMapEnabled = specularMapEnabled ? TRUE : FALSE;
-
-		bool hasGlossMap = (bool)c.hasGlossMap;
-		ImGui::Checkbox("Gloss Map", &hasGlossMap);
-		c.hasGlossMap = hasGlossMap ? TRUE : FALSE;
-
-		ImGui::SliderFloat("Spec Weight", &c.specularMapWeight, 0.0f, 2.0f);
-
-		ImGui::SliderFloat("Spec Power", &c.specularPower, 0.0f, 1000.0f, "%f", 5.0f);
-
-		ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specularColor));
-
-		pcb->Update(gfx, c);
-	}
-}
-
 class ModelWindow 
 {
 public:
@@ -154,7 +121,11 @@ public:
 				ImGui::SliderFloat("X", &transform.x, -20.0f, 20.0f);
 				ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f);
 				ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f);
-				pSelectedNode->ControlMeDaddy(gfx, mc);
+
+				if (!pSelectedNode->ControlMeDaddy(gfx, skinMaterial)) 
+				{
+					pSelectedNode->ControlMeDaddy(gfx, ringMaterial);
+				}
 
 				if (ImGui::Button("Reset"))
 				{
@@ -192,7 +163,8 @@ private:
 		float z = 0.0f;
 	};
 	std::unordered_map<int, TransformParameters> transforms;
-	Node::PSMaterialConstantFullmonte mc;
+	Node::PSMaterialConstantFullmonte skinMaterial;
+	Node::PSMaterialConstantNotex ringMaterial;
 private:
 	Node* pSelectedNode;
 };
@@ -500,17 +472,12 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
-		struct PSMaterialConstantNotex
-		{
-			dx::XMFLOAT4 materialColor;
-			float specularIntensity = 0.18f;
-			float specularPower;
-			float padding[2];
-		}pmc;
+		Node::PSMaterialConstantNotex pmc;
+
 		pmc.specularPower = shininess;
 		pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 		pmc.materialColor = diffuseColor;
-		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstantNotex>::Resolve(gfx, pmc, 1u));
+		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(gfx, pmc, 1u));
 	}
 	else
 	{
