@@ -116,7 +116,7 @@ void App::DoFrame()
 		// wall.ShowWindow("Wall");
 
 		// 7. gobber menu
-		gobber.ShowWindow("gobber");
+		gobber.ShowWindow(wnd.Gfx(), "gobber");
 	}
 
 	wnd.Gfx().EndFrame();
