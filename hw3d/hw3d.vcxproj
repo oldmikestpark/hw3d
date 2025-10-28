@@ -272,8 +272,10 @@
     <None Include="DXGetErrorDescription.inl" />
     <None Include="DXGetErrorString.inl" />
     <None Include="DXTrace.inl" />
+    <None Include="LightVectorData.hlsli" />
     <None Include="PointLight.hlsli" />
     <None Include="ShaderOps.hlsli" />
+    <None Include="Transform.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PhongPS.hlsl">

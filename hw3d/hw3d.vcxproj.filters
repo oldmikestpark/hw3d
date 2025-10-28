@@ -353,6 +353,12 @@
     <None Include="ShaderOps.hlsli">
       <Filter>Shader\Common</Filter>
     </None>
+    <None Include="Transform.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="LightVectorData.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PhongPS.hlsl">
