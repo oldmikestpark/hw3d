@@ -12,13 +12,14 @@
 class App 
 {
 public:
-	App();
+	App(const std::string& commandLine = "");
 	int Go();
 	~App();
 private:
 	void DoFrame();
 	void ShowRawInputWindow();
 private:
+	std::string commandLine;
 	int x = 0, y = 0;
 	Camera cam;
 	ImguiManager imgui;

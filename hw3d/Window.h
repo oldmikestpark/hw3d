@@ -82,4 +82,5 @@ private:
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
 	std::vector<BYTE> rawBuffer;
+	std::string commandLine;
 };

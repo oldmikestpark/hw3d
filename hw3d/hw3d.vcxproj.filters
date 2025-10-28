@@ -326,6 +326,9 @@
     <ClInclude Include="TestCube.h">
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="NormalMapTwerker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="chili.ico">
