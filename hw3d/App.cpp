@@ -36,12 +36,12 @@ App::App(const std::string& commandLine)
 			throw std::runtime_error("Normal map processed successfully. Just kidding about that whole runtime error thing.");
 		}
 	}
-	wall.SetRootTransform(dx::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
-	tp.SetPos({12.0f, 0.0f, 0.0f});
-	gobber.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
-	wall.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
+	// wall.SetRootTransform(dx::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
+	// tp.SetPos({12.0f, 0.0f, 0.0f});
+	// gobber.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
+	// wall.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
 
-	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 40.0f));
+	wnd.Gfx().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 400.0f));
 }
 
 void App::DoFrame()
@@ -51,12 +51,13 @@ void App::DoFrame()
 	wnd.Gfx().SetCamera(cam.GetMatrix());
 	light.Bind(wnd.Gfx(), cam.GetMatrix());
 	
-	nano.Draw(wnd.Gfx());
-	wall.Draw(wnd.Gfx());
-	tp.Draw(wnd.Gfx());
-	gobber.Draw(wnd.Gfx());
+	// nano.Draw(wnd.Gfx());
+	// wall.Draw(wnd.Gfx());
+	// tp.Draw(wnd.Gfx());
+	// gobber.Draw(wnd.Gfx());
 
 	light.Draw(wnd.Gfx());
+	sponza.Draw(wnd.Gfx());
 
 	while (const auto e = wnd.kbd.ReadKey()) 
 	{
@@ -120,7 +121,7 @@ void App::DoFrame()
 	// imgui stuff
 	{
 		// 1.model menu
-		nano.ShowWindow(wnd.Gfx(), "Nano");
+		// nano.ShowWindow(wnd.Gfx(), "Nano");
 
 		// 2. camera menu
 		cam.SpawnControlWindow();
@@ -132,13 +133,16 @@ void App::DoFrame()
 		ShowRawInputWindow();
 
 		// 5. block wall plane menu
-		tp.SpawnControlWindow(wnd.Gfx());
+		// tp.SpawnControlWindow(wnd.Gfx());
 
 		// 6. wall menu
-		wall.ShowWindow(wnd.Gfx(), "Wall");
+		// wall.ShowWindow(wnd.Gfx(), "Wall");
 
 		// 7. gobber menu
-		gobber.ShowWindow(wnd.Gfx(), "gobber");
+		// gobber.ShowWindow(wnd.Gfx(), "gobber");
+
+		// 8. Sponza menu
+		sponza.ShowWindow(wnd.Gfx(), "Sponza");
 	}
 
 	wnd.Gfx().EndFrame();
