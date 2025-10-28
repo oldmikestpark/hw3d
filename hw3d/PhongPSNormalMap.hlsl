@@ -38,7 +38,7 @@ float4 main(float3 viewPos : Position, float3 viewNormal : Normal, float3 tan : 
         tanNormal.y *= -1.0f;
         tanNormal.z *= -1.0f;
         
-        viewNormal = mul(tanNormal, tanToView);
+        viewNormal = normalize(mul(tanNormal, tanToView));
     }
     const float3 vToL = lightPos - viewPos;
     const float distToL = length(vToL);

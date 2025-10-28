@@ -22,6 +22,8 @@ SamplerState splr;
 
 float4 main(float3 viewPos : Position, float3 viewNormal : Normal, float2 tc : Texcood) : SV_Target
 {
+    viewNormal = normalize(viewNormal);
+    
     // fragment to light vector data
     const float3 vTol = lightPos - viewPos;
     const float distTol = length(vTol);
