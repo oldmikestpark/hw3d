@@ -26,8 +26,8 @@ private:
 	ChiliTimer timer;
 	PointLight light;
 	float speed_factor = 1.0f;
-	Model gobber{wnd.Gfx(), "Models\\gobber\\GoblinX.obj"};
-	Model wall{ wnd.Gfx(),"Models\\brick_wall\\brick_wall.obj" };
-	TestPlane tp{ wnd.Gfx(),1.0 };
-	Model nano{ wnd.Gfx(), "Models\\nano_textured\\nanosuit.obj" };
+	Model gobber{wnd.Gfx(), "Models\\gobber\\GoblinX.obj", 6.0f};
+	Model wall{ wnd.Gfx(),"Models\\brick_wall\\brick_wall.obj", 6.0f};
+	TestPlane tp{ wnd.Gfx(),6.0 };
+	Model nano{ wnd.Gfx(), "Models\\nano_textured\\nanosuit.obj", 6.0f};
 };
