@@ -1,13 +1,7 @@
-cbuffer LightCBuf
-{
-    float3 lightPos;
-    float3 ambient;
-    float3 diffuseColor;
-    float diffuseIntensity;
-    float attConst;
-    float attLin;
-    float attQuad;
-};
+#include "ShaderOps.hlsli"
+#include "LightVectorData.hlsli"
+
+#include "PointLight.hlsli"
 
 cbuffer ObjectCBuf
 {
@@ -16,20 +10,22 @@ cbuffer ObjectCBuf
     float specularPower;
 };
 
-float4 main(float3 viewPos : Position, float3 viewNormal : Normal) : SV_Target
+
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal) : SV_Target
 {
+    // normalize the mesh normal
     viewNormal = normalize(viewNormal);
-    
-    const float3 vTol = lightPos - viewPos;
-    const float distTol = length(vTol);
-    const float3 dirTol = vTol / distTol;
-    
-    const float att = 1.0f / (attConst + attLin * distTol + attQuad * (distTol * distTol));
-    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(vTol, viewNormal));
-
-    const float3 w = viewNormal * dot(vTol, viewNormal);
-    const float3 r = w * 2.0f - vTol;
-
-    const float4 specular = att * (float4(diffuseColor, 1.0f) * diffuseIntensity) * specularColor * pow(max(0.0f, dot(normalize(-r), normalize(viewPos))), specularPower);
-    return saturate(float4(diffuse + ambient, 1.0f) * materialColor + specular);
+	// fragment to light vector data
+    const LightVectorData lv = CalculateLightVectorData(viewLightPos, viewFragPos);
+	// attenuation
+    const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
+	// diffuse
+    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, viewNormal);
+    // specular
+    const float3 specular = Speculate(
+        specularColor.rgb, 1.0f, viewNormal,
+        lv.vToL, viewFragPos, att, specularPower
+    );
+	// final color
+    return float4(saturate((diffuse + ambient) * materialColor.rgb + specular), 1.0f);
 }
