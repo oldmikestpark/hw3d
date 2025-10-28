@@ -162,6 +162,9 @@
     <ClCompile Include="TestCube.cpp">
       <Filter>源文件\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="ChiliXM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsMessageMap.h">
@@ -327,6 +330,9 @@
       <Filter>头文件\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="NormalMapTwerker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliXM.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
