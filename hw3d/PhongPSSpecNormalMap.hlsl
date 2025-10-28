@@ -33,11 +33,7 @@ float3 MapNormal(
     uniform Texture2D nmap,
     uniform SamplerState splr)
 {
-    const float3x3 tanToTarget = float3x3(
-            normalize(tan),
-            normalize(bitan),
-            normalize(normal)
-        );
+    const float3x3 tanToTarget = float3x3(tan, bitan, normal);
 
     const float3 normalSample = nmap.Sample(splr, tc).xyz;
     float3 tanNormal = normalSample * 2.0f - 1.0f;
@@ -79,18 +75,16 @@ float3 Speculate(
 
 float4 main(float3 viewPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
+    viewNormal = normalize(viewNormal);
     if (normalMapEnabled)
     {
-        viewNormal = MapNormal(viewTan, viewBitan, viewNormal, tc, nmap, splr);
+        viewNormal = MapNormal(normalize(viewTan), normalize(viewBitan), viewNormal, tc, nmap, splr);
     }
 	// fragment to light vector data
     const float3 viewFragToL = viewLightPos - viewPos;
     const float distFragToL = length(viewFragToL);
     const float3 viewDirFragToL = viewFragToL / distFragToL;
-	// attenuation
-    const float att = Attenuate(attConst, attLin, attQuad, distFragToL);
-	// diffuse intensity
-    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(viewDirFragToL, viewNormal));
+	
 	// reflected light vector
     const float3 w = viewNormal * dot(viewFragToL, viewNormal);
     const float3 r = w * 2.0f - viewFragToL;
@@ -111,6 +105,12 @@ float4 main(float3 viewPos : Position, float3 viewNormal : Normal, float3 viewTa
     {
         specularReflectionColor = specularColor;
     }
+    
+    // attenuation
+    const float att = Attenuate(attConst, attLin, attQuad, distFragToL);
+	// diffuse intensity
+    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(viewDirFragToL, viewNormal));
+    
     const float3 specularReflected = Speculate(
         specularReflectionColor,
         1.0f, viewNormal,
