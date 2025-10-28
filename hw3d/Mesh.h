@@ -48,6 +48,7 @@ public:
 	int GetId() const noexcept;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept;
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
+	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	void ShowTree(Node*& pSelectedNode) const noexcept;
 	template<class T>
 	bool ControlMeDaddy(Graphics& gfx, T& c) 
