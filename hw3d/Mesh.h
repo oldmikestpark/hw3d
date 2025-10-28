@@ -8,6 +8,7 @@
 #include <optional>
 #include "ConstantBuffer.h"
 #include <type_traits>
+#include <filesystem>
 #include "imgui\imgui.h"
 
 using namespace Bind;
@@ -116,13 +117,13 @@ private:
 class Model 
 {
 public:
-	Model(Graphics& gfx, const std::string fileName);
+	Model(Graphics& gfx, const std::string& pathString);
 	void Draw(Graphics& gfx) const;
 	void ShowWindow(Graphics& gfx, const char* windowName = nullptr) noexcept;
 	void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 	~Model() noexcept;
 private:
-	std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials);
+	std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path);
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node);
 private:
 	std::unique_ptr<Node> pRoot;
