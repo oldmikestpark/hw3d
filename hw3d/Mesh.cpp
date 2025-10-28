@@ -108,10 +108,11 @@ public:
 		{
 			ImGui::Columns(2, nullptr, true);
 			root.ShowTree(pSelectedNode);
+
+			ImGui::NextColumn();
 			if (pSelectedNode != nullptr)
 			{
 				auto& transform = transforms[pSelectedNode->GetId()];
-				ImGui::NextColumn();
 				ImGui::Text("Orientation");
 				ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
 				ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f);
@@ -475,7 +476,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		Node::PSMaterialConstantNotex pmc;
 
 		pmc.specularPower = shininess;
-		pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
+		pmc.specularColor = specularColor;
 		pmc.materialColor = diffuseColor;
 		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(gfx, pmc, 1u));
 	}
