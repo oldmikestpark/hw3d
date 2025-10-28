@@ -40,6 +40,9 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{96d5d5d8-6598-45f7-9492-c64cdd4d798e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader\Common">
+      <UniqueIdentifier>{c66f5751-bc57-49b0-b263-512c344bae45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -343,6 +346,12 @@
     </None>
     <None Include="DXTrace.inl">
       <Filter>Dxerr</Filter>
+    </None>
+    <None Include="PointLight.hlsli">
+      <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="ShaderOps.hlsli">
+      <Filter>Shader\Common</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
