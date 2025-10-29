@@ -7,17 +7,23 @@ template<typename F>
 inline void TexturePreprocessor::TransformFile(const std::string& pathIn, const std::string& pathOut, F&& func)
 {
 	auto surf = Surface::FromFile(pathIn);
-
-	const auto nPixels = surf.GetWidth() * surf.GetHeight();
-	const auto pBegin = surf.GetBufferPtr();
-	const auto pEnd = surf.GetBufferPtrConst() + nPixels;
-	for (auto pCurrent = pBegin; pCurrent < pEnd; pCurrent++) 
-	{
-		const auto n = ColorToVector(*pCurrent);
-		*pCurrent = VectorToColor(func(n));
-	}
-
+	TransformSurface(surf, func);
 	surf.Save(pathOut);
+}
+
+template<typename F>
+inline static void TexturePreprocessor::TransformSurface(Surface& surf, F&& func) 
+{
+	const auto width = surf.GetWidth();
+	const auto height = surf.GetHeight();
+	for (unsigned int x = 0; x < width; x++) 
+	{
+		for (unsigned int y = 0; y < height; y++) 
+		{
+			const auto n = ColorToVector(surf.GetPixel(x, y));
+			surf.PutPixel(x, y, VectorToColor(n));
+		}
+	}
 }
 
 void TexturePreprocessor::FlipYAllNormalMapsInObj(const std::string& objPath)
@@ -43,12 +49,52 @@ void TexturePreprocessor::FlipYNormalMap(const std::string& pathIn, const std::s
 {
 	using namespace DirectX;
 	const auto flipY = XMVectorSet(1.0f, -1.0f, 1.0f, 1.0f);
-	const auto ProcessNormal = [flipY](FXMVECTOR n) -> XMVECTOR
+	const auto ProcessNormal = [flipY](FXMVECTOR n, int x, int y) -> XMVECTOR
 	{
 		return XMVectorMultiply(flipY, n);
 	};
 
 	TransformFile(pathIn, pathOut, ProcessNormal);
+}
+
+void TexturePreprocessor::ValidateNormalMap(const std::string& pathIn, float thresholdMin, float thresholdMax)
+{
+	OutputDebugStringA(("Validate normal map [" + pathIn + "]\n").c_str());
+
+	using namespace DirectX;
+	auto sum = XMVectorZero();
+	const auto ProcessNormal = [thresholdMin, thresholdMax, &sum](FXMVECTOR n, int x, int y) 
+	{
+		const float len = XMVectorGetX(XMVector3Length(n));
+		const float z = XMVectorGetZ(n);
+		if (len < thresholdMin || len > thresholdMax) 
+		{
+			XMFLOAT3 vec;
+			XMStoreFloat3(&vec, n);
+			std::ostringstream oss;
+			oss << "Bad normal length: " << len << " at: (" << x << ", " << y << ") normal: (" << vec.x << ", " << vec.y << ", " << vec.z << ")\n";
+			OutputDebugStringA(oss.str().c_str());
+		}
+		if (z < 0.0f) 
+		{
+			XMFLOAT3 vec;
+			XMStoreFloat3(&vec, n);
+			std::ostringstream oss;
+			oss << "Bad normal Z direction at : (" << x << ", " << y << ") normal: (" << vec.x << ", " << vec.y << ", " << vec.z << ")\n";
+			OutputDebugStringA(oss.str().c_str());
+		}
+		sum = XMVectorAdd(sum, n);
+		return n;
+	};
+	auto surf = Surface::FromFile(pathIn);
+	TransformSurface(surf, ProcessNormal);
+	{
+		XMFLOAT2 sumv;
+		XMStoreFloat2(&sumv, sum);
+		std::ostringstream oss;
+		oss << "Normal map biases: (" << sumv.x << ", " << sumv.y << ")\n";
+		OutputDebugStringA(oss.str().c_str());
+	}
 }
 
 DirectX::XMVECTOR TexturePreprocessor::ColorToVector(Surface::Color c) noexcept
