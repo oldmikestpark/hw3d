@@ -33,6 +33,16 @@ App::App(const std::string& commandLine)
 			);
 			throw std::runtime_error("Normal map processed successfully. Just kidding about that whole runtime error thing.");
 		}
+		else if (nArgs >= 3 && std::wstring(pArgs[1]) == L"--twerk-flipy") 
+		{
+			const std::wstring pathInWide = pArgs[2];
+			const std::wstring pathOutWide = pArgs[3];
+			TexturePreprocessor::FlipYNormalMap(
+				std::string(pathInWide.begin(), pathInWide.end()),
+				std::string(pathOutWide.begin(), pathOutWide.end())
+			);
+			throw std::runtime_error("Normal map processed successfully. Just kidding about that whole runtime error thing.");
+		}
 	}
 	// wall.SetRootTransform(dx::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
 	// tp.SetPos({12.0f, 0.0f, 0.0f});

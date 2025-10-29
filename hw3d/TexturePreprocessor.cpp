@@ -27,13 +27,6 @@ void TexturePreprocessor::FlipYAllNormalMapsInObj(const std::string& objPath)
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile(objPath, 0u);
 
-	using namespace DirectX;
-	const auto flipY = XMVectorSet(1.0f, -1.0f, 1.0f, 1.0f);
-	const auto ProcessNormal = [flipY](FXMVECTOR n) -> XMVECTOR
-	{
-		return XMVectorMultiply(flipY, n);
-	};
-
 	for (auto i = 0u; i < pScene->mNumMaterials; i++) 
 	{
 		const auto& mat = *pScene->mMaterials[i];
@@ -41,9 +34,21 @@ void TexturePreprocessor::FlipYAllNormalMapsInObj(const std::string& objPath)
 		if (mat.GetTexture(aiTextureType_NORMALS, 0, &texFileName) == aiReturn_SUCCESS) 
 		{
 			const auto path = rootPath + texFileName.C_Str();
-			TransformFile(path, path, ProcessNormal);
+			FlipYNormalMap(path, path);
 		}
 	}
+}
+
+void TexturePreprocessor::FlipYNormalMap(const std::string& pathIn, const std::string& pathOut)
+{
+	using namespace DirectX;
+	const auto flipY = XMVectorSet(1.0f, -1.0f, 1.0f, 1.0f);
+	const auto ProcessNormal = [flipY](FXMVECTOR n) -> XMVECTOR
+	{
+		return XMVectorMultiply(flipY, n);
+	};
+
+	TransformFile(pathIn, pathOut, ProcessNormal);
 }
 
 DirectX::XMVECTOR TexturePreprocessor::ColorToVector(Surface::Color c) noexcept
