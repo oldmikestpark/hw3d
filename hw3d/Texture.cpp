@@ -29,13 +29,14 @@ namespace Bind
 		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
 		textureDesc.CPUAccessFlags = 0;
 		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
-		D3D11_SUBRESOURCE_DATA sd = {};
-		sd.pSysMem = s.GetBufferPtr();
-		sd.SysMemPitch = s.GetWidth() * sizeof(Surface::Color);
 		wrl::ComPtr<ID3D11Texture2D> pTexture;
 		GFX_THROW_INFO(GetDevice(gfx)->CreateTexture2D(
-			&textureDesc, &sd, &pTexture
+			&textureDesc, nullptr, &pTexture
 		));
+
+		GetContex(gfx)->UpdateSubresource(
+			pTexture.Get(), 0u, nullptr, s.GetBufferPtrConst(), s.GetWidth() * sizeof(Surface::Color), 0u
+		);
 
 		// create the resource view on the texture
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvd = {};
