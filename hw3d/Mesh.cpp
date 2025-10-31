@@ -560,6 +560,8 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 	{
 		throw std::runtime_error("terrible combination of textures in material smh");
 	}
+
+	bindablePtrs.push_back(Rasterizer::Resolve(gfx, false));
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }
 
