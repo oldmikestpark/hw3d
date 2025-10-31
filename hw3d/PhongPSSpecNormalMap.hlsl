@@ -22,9 +22,15 @@ SamplerState splr;
 float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
     float4 dvtx = tex.Sample(splr, tc);
+    
     clip(dvtx.a < 0.1f ? -1 : 1);
+    
+    if (dot(viewNormal, viewFragPos) >= 0.0f)
+    {
+        viewNormal = -viewNormal;
+    }
     // normalize the mesh normal
-    viewNormal = normalize(viewNormal);
+        viewNormal = normalize(viewNormal);
     // replace normal with mapped if normal mapping enabled
     if (normalMapEnabled)
     {
