@@ -177,6 +177,9 @@
     <ClCompile Include="ChiliUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptCommander.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsMessageMap.h">
@@ -359,6 +362,12 @@
     <ClInclude Include="ChiliUtil.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ScriptCommander.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="chili.ico">
@@ -391,6 +400,9 @@
     </None>
     <None Include="LightVectorData.hlsli">
       <Filter>Shader\Common</Filter>
+    </None>
+    <None Include="process.json">
+      <Filter>头文件</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

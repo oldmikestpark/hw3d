@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "TestPlane.h"
 #include <set>
+#include "ScriptCommander.h"
 
 class App 
 {
@@ -24,6 +25,7 @@ private:
 	Camera cam;
 	ImguiManager imgui;
 	Window wnd;
+	ScriptCommander scriptCommander;
 	ChiliTimer timer;
 	PointLight light;
 	float speed_factor = 1.0f;
