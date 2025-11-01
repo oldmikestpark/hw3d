@@ -1,4 +1,5 @@
 #include "PixelShader.h"
+#include "ChiliUtil.h"
 
 namespace Bind
 {
@@ -9,7 +10,7 @@ namespace Bind
 		INFOMAN(gfx);
 
 		Microsoft::WRL::ComPtr<ID3DBlob> pBlob;
-		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{path.begin(), path.end()}.c_str(), &pBlob));
+		GFX_THROW_INFO(D3DReadFileToBlob(ToWide(path).c_str(), &pBlob));
 		GFX_THROW_INFO(GetDevice(gfx)->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader));
 	}
 

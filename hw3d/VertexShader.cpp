@@ -1,6 +1,7 @@
 #include "VertexShader.h"
 #include "BindableCodex.h"
 #include <typeinfo>
+#include "ChiliUtil.h"
 
 namespace Bind
 {
@@ -10,7 +11,7 @@ namespace Bind
 	{
 		INFOMAN(gfx);
 
-		GFX_THROW_INFO(D3DReadFileToBlob(std::wstring{path.begin(), path.end()}.c_str(), &pBlob));
+		GFX_THROW_INFO(D3DReadFileToBlob(ToWide(path).c_str(), &pBlob));
 		GFX_THROW_INFO(GetDevice(gfx)->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader));
 	}
 
