@@ -1,6 +1,6 @@
 
  {
-  "enabled": true,
+  "enabled": false,
   "commands": [
     {
       "command": "make-stripes",
