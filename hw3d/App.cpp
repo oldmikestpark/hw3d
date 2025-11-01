@@ -5,7 +5,6 @@
 #include "ChiliMath.h"
 #include <algorithm>
 #include "Surface.h"
-#include "GDIPlusManager.h"
 #include "imgui/imgui.h"
 #include "VertexBuffer.h"
 #include <string>
@@ -13,7 +12,6 @@
 #include <shellAPI.h>
 #include <dxtex/DirectXTex.h>
 
-GDIPlusManager gdipm;
 namespace dx = DirectX;
 App::App(const std::string& commandLine)
 	:
@@ -21,14 +19,6 @@ App::App(const std::string& commandLine)
 	wnd(1920, 1080, "The Donkey Fart Box"),
 	light(wnd.Gfx())
 {
-	auto scratch = DirectX::ScratchImage{};
-	DirectX::LoadFromWICFile(L"images\\brick_wall_diffuse.jpg", DirectX::WIC_FLAGS_NONE, nullptr, scratch);
-	auto image = scratch.GetImage(0, 0, 0);
-	auto a = image->pixels[0];
-	auto b = image->pixels[1];
-	auto c = image->pixels[2];
-	auto d = image->pixels[3];
-
 	if (this->commandLine != "") 
 	{
 		int nArgs;

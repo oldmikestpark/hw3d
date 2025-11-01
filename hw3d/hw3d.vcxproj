@@ -125,7 +125,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>gdiplus.lib;assimp-vc143-mt.lib</AdditionalDependencies>
+      <AdditionalDependencies>gdiplus.lib;assimp-vc143-mt.lib;comdlg32.lib;shell32.lib;Debug\DirectXTex.lib</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ObjectFileOutput>$(ProjectDir)%(Filename).cso</ObjectFileOutput>
@@ -156,7 +156,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>gdiplus.lib;assimp-vc143-mt.lib</AdditionalDependencies>
+      <AdditionalDependencies>gdiplus.lib;assimp-vc143-mt.lib;comdlg32.lib;shell32.lib;Release\DirectXTex.lib</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ObjectFileOutput>$(ProjectDir)%(Filename).cso</ObjectFileOutput>
