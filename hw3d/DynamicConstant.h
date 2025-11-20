@@ -67,7 +67,7 @@ namespace Dcb
 		virtual size_t GetOffsetEnd() const noexcept = 0;
 
 		template<class T>
-		Struct& Add(const std::string key) noexcept;
+		Struct& Add(const char* key) noexcept;
 
 		RESOLVE_BASE(Float3)
 		RESOLVE_BASE(Float)
@@ -147,7 +147,7 @@ namespace Dcb
 	};
 
 	template<class T>
-	Struct& LayoutElement::Add(const std::string key) noexcept 
+	Struct& LayoutElement::Add(const char* key) noexcept 
 	{
 		auto ps{dynamic_cast<Struct*>(this)};
 		assert(ps != nullptr);
