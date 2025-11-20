@@ -31,7 +31,7 @@ public:\
 #define REF_CONVERSION(eltype, systype)\
 operator systype&() noexcept\
 {\
-	return *reinterpret_cast<systype*>(pBytes + pLayout->Resolve ## eltype());\
+	return *reinterpret_cast<systype*>(pBytes + offset + pLayout->Resolve ## eltype());\
 }\
 systype& operator=(const systype& rhs) noexcept\
 {\
@@ -41,6 +41,7 @@ systype& operator=(const systype& rhs) noexcept\
 namespace Dcb 
 {
 	class Struct;
+	class Array;
 
 	namespace dx = DirectX;
 	class LayoutElement 
@@ -60,14 +61,31 @@ namespace Dcb
 			assert(false && "cannot access member on non struct");
 			return *this;
 		}
+		virtual LayoutElement& T() 
+		{
+			assert(false);
+			return *this;
+		}
+		virtual const LayoutElement& T() const 
+		{
+			assert(false);
+			return *this;
+		}
 		size_t GetOffsetBegin() const noexcept
 		{
 			return offset;
 		}
 		virtual size_t GetOffsetEnd() const noexcept = 0;
 
-		template<class T>
+		size_t GetSizeInBytes() const noexcept 
+		{
+			return GetOffsetEnd() - GetOffsetBegin();
+		}
+
+		template<typename U>
 		Struct& Add(const char* key) noexcept;
+		template<typename U>
+		Array& Set(size_t size) noexcept;
 
 		RESOLVE_BASE(Float3)
 		RESOLVE_BASE(Float)
@@ -94,10 +112,10 @@ namespace Dcb
 		{
 			return elements.empty() ? GetOffsetBegin() : elements.back()->GetOffsetEnd();
 		}
-		template<typename T>
-		Struct& Add(const char* name) 
+		template<typename U>
+		Struct& Add(const char* name) noexcept
 		{
-			elements.push_back(std::make_unique<T>(GetOffsetEnd()));
+			elements.push_back(std::make_unique<U>(GetOffsetEnd()));
 			if (!map.emplace(name, elements.back().get()).second) 
 			{
 				assert(false);
@@ -109,22 +127,58 @@ namespace Dcb
 		std::vector<std::unique_ptr<LayoutElement>> elements;
 	};
 
+	class Array : public LayoutElement
+	{
+	public:
+		using LayoutElement::LayoutElement;
+		size_t GetOffsetEnd() const noexcept override final 
+		{
+			assert(pElement);
+			return GetOffsetBegin() + pElement->GetSizeInBytes() * size;
+		}
+		template<typename U>
+		Array& Set(size_t size_in) noexcept
+		{
+			pElement = std::make_unique<U>(GetOffsetBegin());
+			size = size_in;
+			return *this;
+		}
+		LayoutElement& T() override final
+		{
+			return *pElement;
+		}
+		const LayoutElement& T() const override final 
+		{
+			return *pElement;
+		}
+	private:
+		size_t size{0u};
+		std::unique_ptr<LayoutElement> pElement;
+	};
+
 	class ElementRef 
 	{
 	public:
-		ElementRef(const LayoutElement* pLayout, char* pBytes)
+		ElementRef(const LayoutElement* pLayout, char* pBytes, size_t offset)
 			:
 			pLayout(pLayout),
-			pBytes(pBytes) 
+			pBytes(pBytes),
+			offset(offset)
 		{}
 		ElementRef operator[](const char* key) noexcept 
 		{
-			return {&(*pLayout)[key], pBytes};
+			return {&(*pLayout)[key], pBytes, offset};
+		}
+		ElementRef operator[](const size_t index) noexcept 
+		{
+			const auto& t{pLayout->T()};
+			return {&t, pBytes, offset + t.GetSizeInBytes() * index};
 		}
 
 		REF_CONVERSION(Float3, dx::XMFLOAT3)
 		REF_CONVERSION(Float, float)
 	private:
+		size_t offset;
 		const class LayoutElement* pLayout;
 		char* pBytes;
 	};
@@ -139,18 +193,25 @@ namespace Dcb
 		{}
 		ElementRef operator[](const char* key) noexcept 
 		{
-			return {&(*pLayout)[key], bytes.data()};
+			return {&(*pLayout)[key], bytes.data(), 0u};
 		}
 	private:
 		const class Struct* pLayout;
 		std::vector<char> bytes;
 	};
 
-	template<class T>
+	template<typename U>
 	Struct& LayoutElement::Add(const char* key) noexcept 
 	{
 		auto ps{dynamic_cast<Struct*>(this)};
 		assert(ps != nullptr);
-		return ps->Add<T>(key);
+		return ps->Add<U>(key);
+	}
+	template<typename U>
+	Array& LayoutElement::Set(size_t size) noexcept 
+	{
+		auto pa{dynamic_cast<Array*>(this)};
+		assert(pa != nullptr);
+		return pa->Set<U>(size);
 	}
 }

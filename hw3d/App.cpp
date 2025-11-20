@@ -32,6 +32,11 @@ App::App(const std::string& commandLine)
 	float v_f{ref_p};
 	auto& ff{v};
 	auto& fff{v_f};
+
+	s.Add<Dcb::Float>("woot");
+	s.Add<Dcb::Array>("arr");
+	s["arr"].Set<Dcb::Float>(4);
+
 	// wall.SetRootTransform(dx::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
 	// tp.SetPos({12.0f, 0.0f, 0.0f});
 	// gobber.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
