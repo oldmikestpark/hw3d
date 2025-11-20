@@ -9,6 +9,7 @@
 #include "VertexBuffer.h"
 #include <string>
 #include "ChiliUtil.h"
+#include "DynamicConstant.h"
 
 namespace dx = DirectX;
 App::App(const std::string& commandLine)
@@ -18,6 +19,14 @@ App::App(const std::string& commandLine)
 	scriptCommander(TokenizeQuoted(commandLine)),
 	light(wnd.Gfx())
 {
+	Dcb::Struct s(0);
+	s.Add<Dcb::Struct>("butts");
+	static_cast<Dcb::Struct&>(s["butts"]).Add<Dcb::Float3>("dicks");
+	Dcb::Buffer b{s};
+	auto ref{ b["butts"]["dicks"] };
+	ref = DirectX::XMFLOAT3{69.0f, 0.0f, 0.0f};
+	DirectX::XMFLOAT3 v{b["butts"]["dicks"]};
+	auto ff{v};
 	// wall.SetRootTransform(dx::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
 	// tp.SetPos({12.0f, 0.0f, 0.0f});
 	// gobber.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
