@@ -21,8 +21,8 @@ App::App(const std::string& commandLine)
 {
 	Dcb::Struct s(0);
 	s.Add<Dcb::Struct>("butts");
-	s["butts"].AsStruct().Add<Dcb::Float3>("dicks");
-	s["butts"].AsStruct().Add<Dcb::Float>("pube");
+	s["butts"].Add<Dcb::Float3>("dicks");
+	s["butts"].Add<Dcb::Float>("pube");
 	Dcb::Buffer b{s};
 	auto ref_d{ b["butts"]["dicks"] };
 	ref_d = DirectX::XMFLOAT3{69.0f, 0.0f, 0.0f};
