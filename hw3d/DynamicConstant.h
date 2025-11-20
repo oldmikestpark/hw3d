@@ -7,6 +7,37 @@
 #include <memory>
 #include <type_traits>
 
+#define RESOLVE_BASE(eltype)\
+virtual size_t Resolve ## eltype() const noexcept\
+{\
+	assert(false && "Can not resolve to " #eltype); return 0u;\
+}
+
+#define LEAF_ELEMENT(eltype, systype)\
+class eltype : public LayoutElement\
+{\
+public:\
+	using LayoutElement::LayoutElement;\
+	size_t Resolve ## eltype() const noexcept override final\
+	{\
+		return GetOffsetBegin();\
+	}\
+	size_t GetOffsetEnd() const noexcept override final\
+	{\
+		return GetOffsetBegin() + sizeof(systype);\
+	}\
+};
+
+#define REF_CONVERSION(eltype, systype)\
+operator systype&() noexcept\
+{\
+	return *reinterpret_cast<systype*>(pBytes + pLayout->Resolve ## eltype());\
+}\
+systype& operator=(const systype& rhs) noexcept\
+{\
+	return static_cast<systype&>(*this) = rhs;\
+}
+
 namespace Dcb 
 {
 	namespace dx = DirectX;
@@ -32,28 +63,17 @@ namespace Dcb
 			return offset;
 		}
 		virtual size_t GetOffsetEnd() const noexcept = 0;
-		virtual size_t ResolveFloat3() const noexcept 
-		{
-			assert(false && "can not resolve LayoutElement type");
-			return 0;
-		}
+
+		class Struct& AsStruct() noexcept;
+
+		RESOLVE_BASE(Float3)
+		RESOLVE_BASE(Float)
 	private:
 		size_t offset;
 	};
 
-	class Float3 : public LayoutElement 
-	{
-	public:
-		using LayoutElement::LayoutElement;
-		size_t ResolveFloat3() const noexcept 
-		{
-			return LayoutElement::GetOffsetBegin();
-		}
-		size_t GetOffsetEnd() const noexcept override 
-		{
-			return LayoutElement::GetOffsetBegin() + sizeof(dx::XMFLOAT3);
-		}
-	};
+	LEAF_ELEMENT(Float3, dx::XMFLOAT3)
+	LEAF_ELEMENT(Float, float)
 
 	class Struct : public LayoutElement 
 	{
@@ -72,13 +92,14 @@ namespace Dcb
 			return elements.empty() ? GetOffsetBegin() : elements.back()->GetOffsetEnd();
 		}
 		template<typename T>
-		void Add(const char* name) 
+		Struct& Add(const char* name) 
 		{
 			elements.push_back(std::make_unique<T>(GetOffsetEnd()));
 			if (!map.emplace(name, elements.back().get()).second) 
 			{
 				assert(false);
 			}
+			return *this;
 		}
 	private:
 		std::unordered_map<std::string, LayoutElement*> map;
@@ -97,16 +118,9 @@ namespace Dcb
 		{
 			return {&(*pLayout)[key], pBytes};
 		}
-		operator dx::XMFLOAT3& () 
-		{
-			return *reinterpret_cast<dx::XMFLOAT3*>(pBytes + pLayout->ResolveFloat3());
-		}
-		dx::XMFLOAT3 operator=(const dx::XMFLOAT3& rhs) noexcept 
-		{
-			auto& ref{*reinterpret_cast<dx::XMFLOAT3*>(pBytes + pLayout->ResolveFloat3())};
-			ref = rhs;
-			return ref;
-		}
+
+		REF_CONVERSION(Float3, dx::XMFLOAT3)
+		REF_CONVERSION(Float, float)
 	private:
 		const class LayoutElement* pLayout;
 		char* pBytes;
@@ -128,4 +142,11 @@ namespace Dcb
 		const class Struct* pLayout;
 		std::vector<char> bytes;
 	};
+
+	Struct& LayoutElement::AsStruct() noexcept 
+	{
+		auto ps{dynamic_cast<Struct*>(this)};
+		assert(ps != nullptr);
+		return *ps;
+	}
 }

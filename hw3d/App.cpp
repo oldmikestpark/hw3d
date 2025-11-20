@@ -21,12 +21,17 @@ App::App(const std::string& commandLine)
 {
 	Dcb::Struct s(0);
 	s.Add<Dcb::Struct>("butts");
-	static_cast<Dcb::Struct&>(s["butts"]).Add<Dcb::Float3>("dicks");
+	s["butts"].AsStruct().Add<Dcb::Float3>("dicks");
+	s["butts"].AsStruct().Add<Dcb::Float>("pube");
 	Dcb::Buffer b{s};
-	auto ref{ b["butts"]["dicks"] };
-	ref = DirectX::XMFLOAT3{69.0f, 0.0f, 0.0f};
-	DirectX::XMFLOAT3 v{b["butts"]["dicks"]};
-	auto ff{v};
+	auto ref_d{ b["butts"]["dicks"] };
+	ref_d = DirectX::XMFLOAT3{69.0f, 0.0f, 0.0f};
+	auto ref_p{b["butts"]["pube"]};
+	ref_p = 420.0f;
+	DirectX::XMFLOAT3 v{ref_d};
+	float v_f{ref_p};
+	auto& ff{v};
+	auto& fff{v_f};
 	// wall.SetRootTransform(dx::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
 	// tp.SetPos({12.0f, 0.0f, 0.0f});
 	// gobber.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
