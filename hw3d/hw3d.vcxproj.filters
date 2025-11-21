@@ -371,6 +371,9 @@
     <ClInclude Include="DynamicConstant.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantBufferEx.h">
+      <Filter>头文件\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="chili.ico">

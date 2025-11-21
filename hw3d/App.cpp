@@ -19,11 +19,12 @@ App::App(const std::string& commandLine)
 	scriptCommander(TokenizeQuoted(commandLine)),
 	light(wnd.Gfx())
 {
-	Dcb::Struct s(0);
+	auto ps = std::make_shared<Dcb::Struct>(0);
+	Dcb::Struct& s = *ps;
 	s.Add<Dcb::Struct>("butts");
 	s["butts"].Add<Dcb::Float3>("dicks");
 	s["butts"].Add<Dcb::Float>("pube");
-	Dcb::Buffer b{s};
+	Dcb::Buffer b(std::move(ps));
 	auto ref_d{ b["butts"]["dicks"] };
 	ref_d = DirectX::XMFLOAT3{69.0f, 0.0f, 0.0f};
 	auto ref_p{b["butts"]["pube"]};
@@ -32,15 +33,15 @@ App::App(const std::string& commandLine)
 	float v_f{ref_p};
 	auto& ff{v};
 	auto& fff{v_f};
-
+	
 	s.Add<Dcb::Float>("woot");
 	s.Add<Dcb::Array>("arr");
 	s["arr"].Set<Dcb::Float>(4);
 
-	// wall.SetRootTransform(dx::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
-	// tp.SetPos({12.0f, 0.0f, 0.0f});
-	// gobber.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
-	// wall.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
+	//wall.SetRootTransform(dx::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
+	//tp.SetPos({12.0f, 0.0f, 0.0f});
+	//gobber.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
+	//wall.SetRootTransform(DirectX::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
 	bluePlane.SetPos(cam.GetPos());
 	redPlane.SetPos(cam.GetPos());
 

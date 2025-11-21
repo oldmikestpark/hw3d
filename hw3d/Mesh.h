@@ -10,6 +10,8 @@
 #include <type_traits>
 #include <filesystem>
 #include "imgui\imgui.h"
+#include "DynamicConstant.h"
+#include "ConstantBufferEx.h"
 
 using namespace Bind;
 
